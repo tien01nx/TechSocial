@@ -4,80 +4,102 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImgSrc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostsView)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImgSrc)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostsView)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Account.AccountId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="col-md-12">
+    <div class="tile">
+        <div class="tile-body">
+            <div class="row element-button">
+                <div class="col-sm-2">
+                    <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm">
+                        <i class="fas fa-plus"></i>
+                        Tạo Bài Viết
+                    </a>
+                </div>
+            </div>
+            <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                    <tr>
+                        <th width="10"><input type="checkbox" id="all"></th>
+
+                        <th>
+                          Tiêu đề
+                        </th>
+                        <th>
+                            Ngày viết
+                        </th>
+                       
+                        <th>
+                            Nội dung
+                        </th>
+                        <th>
+                            Ảnh minh họa
+                        </th>
+                      @*   <th>
+                            Lượt xem 
+                        </th>
+                        <th>
+                            Bình luận
+                        </th> *@
+                        <th>
+                            Tác giả 
+                        </th>
+                        <th>
+                           Danh mục
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.PostId
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Content)
+                            </td>
+                            <td>
+
+                                <img width="100" height="160"
+                                     src="@Html.DisplayFor(modelItem => item.ImgSrc)">
+
+                            </td>
+                            @* <td>
+                                @Html.DisplayFor(modelItem => item.PostsView)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Comments)
+                            </td> *@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Account.AccountId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category.CategoryId)
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-sm trash" title="Xóa" asp-action="Delete" asp-route-id="@item.PostId">
+
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                                <a class="btn btn-primary btn-sm edit" asp-action="Edit" asp-route-id="@item.PostId" title="Sửa"
+                                   data-target="#ModalUP">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -20,8 +20,6 @@ namespace BoxNews.Models
         [DisplayName("Ngày viết")]
         public DateTime? CreatedAt { get; set; }
 
-        [DisplayName("Tác giả")]
-        public string? Author { get; set; }
 
         [DisplayName("Danh mục")]
         public int? CategoryId { get; set; }

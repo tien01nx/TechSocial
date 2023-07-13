@@ -1,0 +1,48 @@
+﻿@model BoxNews.Models.TblCategory
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="col-md-12">
+    <div class="tile">
+
+        <form asp-action="Edit">
+
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <p class="btn btn-add btn-sm">
+                            <i class="fa fa-bars" aria-hidden="true"></i>
+                            Quản lý danh mục
+                        </p>
+                    </div>
+
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="CategoryId" hidden />
+                <div class="form-group">
+                    <label asp-for="CategoryName" class="control-label"></label>
+                    <input asp-for="CategoryName" class="form-control" />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <a asp-action="Index">Back to List</a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,72 +7,68 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BoxNews.Models;
 using TechSocial.Models;
-using NuGet.Protocol.Core.Types;
 using TechSocial.Repository.IRepository;
-using TechSocial.Repository;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class TblPostsController : Controller
+    public class TblAccountsController : Controller
     {
-        private readonly IPostRepository _repository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IAccountRepository _repository;
 
-
-        public TblPostsController(IPostRepository repository, IWebHostEnvironment webHostEnvironment)
+        public TblAccountsController(IAccountRepository repository)
         {
             _repository = repository;
-            _webHostEnvironment = webHostEnvironment;
         }
 
-        // GET: Admin/TblPosts
+        // GET: Admin/TblAccounts
         public async Task<IActionResult> Index()
         {
+            var role = _repository.GetRole();
+
+            ViewData["RoleId"] = new SelectList(role, "RoleId", "RoleName");
             return View(await _repository.GetAll());
         }
 
-        // GET: Admin/TblPosts/Details/5
+        // GET: Admin/TblAccounts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
             }
-            var tblPost = await _repository.Get(id.Value);
-            if (tblPost == null)
+            var TblAccount = await _repository.Get(id.Value);
+            if (TblAccount == null)
             {
                 return NotFound();
 
             }
 
-            return View(tblPost);
+            return View(TblAccount);
         }
 
-        // GET: Admin/TblPosts/Create
+        // GET: Admin/TblAccounts/Create
         public IActionResult Create()
         {
-            var categories = _repository.GetCategory();
-            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
+            var role = _repository.GetRole();
+       
 
-            var accounts = _repository.GetAccounts();
-            ViewData["AccountId"] = new SelectList(accounts, "AccountId", "FullName");
+            ViewData["RoleId"] = new SelectList(role, "RoleId","RoleName");
             return View();
         }
 
-        // POST: Admin/TblPosts/Create
-      
+        // POST: Admin/TblAccounts/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TblPost tblPost, IFormFile? file)
+        public async Task<IActionResult> Create(TblAccount tblAccount)
         {
             if (ModelState.IsValid)
             {
 
                 try
                 {
-                    await _repository.Create(tblPost, file);
+                    await _repository.Create(tblAccount);
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -80,74 +76,80 @@ namespace TechSocial.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-            return View(tblPost);
+            return View(tblAccount);
         }
 
-        // GET: Admin/TblPosts/Edit/5
+        // GET: Admin/TblAccounts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                NotFound();
             }
-            var tblPost = await _repository.Get(id.Value);
-            if (tblPost == null)
+            var tblAccount = await (_repository.Get(id.Value));
+            if (tblAccount == null)
             {
                 return NotFound();
-
             }
+            var role = _repository.GetRole();
 
-            return View(tblPost);
+            ViewData["RoleId"] = new SelectList(role, "RoleId", "RoleName");
+            return View(tblAccount);
         }
 
-        // POST: Admin/TblPosts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Admin/TblAccounts/Edit/5
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TblPost tblPost, IFormFile? file)
+        public async Task<IActionResult> Edit(int id, [Bind("AccountId,UserName,UserPassword,Email,FullName,RoleId,LastLogin")] TblAccount tblAccount)
         {
             if (ModelState.IsValid)
             {
-                await _repository.Update(tblPost, file);
+                await _repository.Update(tblAccount);
                 return RedirectToAction(nameof(Index));
                 //return View("Index");
             }
-            return View(tblPost);
+
+            //var role = _repository.GetRole();
+
+            //ViewData["RoleId"] = new SelectList(role, "RoleId", "RoleName");
+            return View(tblAccount);
         }
 
-        // GET: Admin/TblPosts/Delete/5
+        // GET: Admin/TblAccounts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
             }
-            var tblPost = await _repository.Get(id.Value);
-            if (tblPost == null)
+            var tblAccount = await _repository.Get(id.Value);
+            if (tblAccount == null)
             {
                 return NotFound();
 
             }
+            //var role = _repository.GetRole();
 
-            return View(tblPost);
+            //ViewData["RoleId"] = new SelectList(role, "RoleId", "RoleName");
+            return View(tblAccount);
         }
 
-        // POST: Admin/TblPosts/Delete/5
+        // POST: Admin/TblAccounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tblPost = await _repository.Delete(id);
-            if (tblPost == null)
+            var tblAccount = await _repository.Delete(id);
+            if (tblAccount == null)
             {
                 return NotFound();
             }
-
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TblPostExists(int id)
+        private bool TblAccountExists(int id)
         {
           return true;
         }

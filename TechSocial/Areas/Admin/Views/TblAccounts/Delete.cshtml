@@ -1,0 +1,80 @@
+﻿@model BoxNews.Models.TblAccount
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+
+
+<div class="col-md-12">
+    <div class="tile">
+
+        <form asp-action="Delete">
+
+            <div class="tile-body">
+                <div class="row element-button">
+                    <div class="col-sm-2">
+                        <p class="btn btn-add btn-sm">
+                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                            Quản lý Tài khoản
+                        </p>
+                    </div>
+
+                </div>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label class="control-label">@Html.DisplayNameFor(model => model.UserName)</label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">@Html.DisplayNameFor(model => model.UserPassword)</label>
+                    <input asp-for="UserPassword" class="form-control" />
+                    <span asp-validation-for="UserPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"> @Html.DisplayNameFor(model => model.Email)</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"> @Html.DisplayNameFor(model => model.FullName)</label>
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">@Html.DisplayNameFor(model => model.LastLogin)</label>
+                    <input asp-for="LastLogin" class="form-control" />
+                    <span asp-validation-for="LastLogin" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">@Html.DisplayNameFor(model => model.Role.RoleName)</label>
+                    <input asp-for="Role" class="form-control" />
+                    <span asp-validation-for="Role" class="text-danger"></span>
+                </div>
+
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="AccountId" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a asp-action="Index">Back to List</a>
+                </form>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
