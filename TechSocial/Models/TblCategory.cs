@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BoxNews.Models
+namespace TechSocial.Models
 {
     public partial class TblCategory
     {
-        public TblCategory()
-        {
-            TblPosts = new HashSet<TblPost>();
-        }
+      
         [Key]
         public int CategoryId { get; set; }
 
@@ -21,6 +19,7 @@ namespace BoxNews.Models
         [DisplayName("Mô tả")]
         public string? Description { get; set; }
 
-        public virtual ICollection<TblPost> TblPosts { get; set; }
+        [ValidateNever]
+        public List<TblPost> TblPosts { get; set; }
     }
 }

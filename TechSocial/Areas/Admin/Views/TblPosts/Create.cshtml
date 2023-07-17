@@ -1,11 +1,17 @@
-﻿@model BoxNews.Models.TblPost
+﻿@using System.Security.Claims;
+@model TechSocial.Models.TblPost
 
+@{
+    var claimsIdentity = (ClaimsIdentity)User.Identity;
+    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+}
 
 <div class="col-md-12">
     <div class="tile">
 
         <form asp-action="Create" enctype="multipart/form-data">
 
+            <input asp-for="AccountId" value="@userId" hidden/>
             <div class="tile-body">
                 <div class="row element-button">
                     <div class="col-sm-2">
@@ -22,23 +28,18 @@
                     <input asp-for="Title" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="CreatedAt" class="control-label"></label>
-                    <input asp-for="CreatedAt" class="form-control" />
-                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
-                </div>
               
                 <div class="form-group">
                     <label asp-for="CategoryId" class="control-label"></label>
                     <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 </div>
-                <div class="form-group">
-                    <label asp-for="AccountId" class="control-label"></label>
-                    <select asp-for="AccountId" class="form-control" asp-items="ViewBag.AccountId"></select>
-                </div>
+               
                 <div class="form-group">
                     <label asp-for="Content" class="control-label"></label>
-                    <input asp-for="Content" class="form-control" />
+                    <textarea asp-for="Content" class="form-control border-0 shadow ">
+
+                    </textarea>
+
                     <span asp-validation-for="Content" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -72,7 +73,15 @@
 
 
 @section Scripts {
-    @{
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
+    @* @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    } *@
 }

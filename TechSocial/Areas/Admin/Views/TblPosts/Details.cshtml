@@ -1,4 +1,4 @@
-﻿@model BoxNews.Models.TblPost
+﻿@model TechSocial.Models.TblPost
 
 @{
     ViewData["Title"] = "Details";
@@ -48,12 +48,8 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Comments)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Account)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Account.AccountId)
-        </dd>
+       
+     
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Category)
         </dt>

@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BoxNews.Models
+namespace TechSocial.Models
 {
-    public partial class TblPost
+    public  class TblPost
     {
-        public TblPost()
-        {
-            TblRatings = new HashSet<TblRating>();
-        }
+       
+
         [Key]
         public int PostId { get; set; }
 
@@ -19,13 +20,6 @@ namespace BoxNews.Models
 
         [DisplayName("Ngày viết")]
         public DateTime? CreatedAt { get; set; }
-
-
-        [DisplayName("Danh mục")]
-        public int? CategoryId { get; set; }
-
-        [DisplayName("Tài khoản")]
-        public int? AccountId { get; set; }
 
         [DisplayName("Nội dung")]
         public string? Content { get; set; }
@@ -39,8 +33,20 @@ namespace BoxNews.Models
         [DisplayName("Bình luận")]
         public string? Comments { get; set; }
 
-        public virtual TblAccount? Account { get; set; }
-        public virtual TblCategory? Category { get; set; }
-        public virtual ICollection<TblRating> TblRatings { get; set; }
+        [DisplayName("Tài khoản")]
+        public string? AccountId { get; set; }
+        [ForeignKey("AccountId")]
+        [ValidateNever]
+        public IdentityUser ? IdentityUser { get; set; }
+
+
+        [DisplayName("Danh mục")]
+        public int? CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        [ValidateNever]
+
+        public TblCategory? Category { get; set; }
+        [ValidateNever]
+        public List<TblRating> TblRatings { get; set; }
     }
 }

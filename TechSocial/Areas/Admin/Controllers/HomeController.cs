@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace BoxNews.Areas.Admin.Controllers
+namespace TechSocial.Areas.Admin.Controllers
 {
     public class HomeController : Controller
     {

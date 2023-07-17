@@ -17,6 +17,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+    
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
@@ -30,7 +32,7 @@
 
             <!-- User Menu-->
             <li>
-                <a class="app-nav__item" href="/index.html"><i class='bx bx-log-out bx-rotate-180'></i> </a>
+                <a class="app-nav__item"  href="/Home/Index"><i class='bx bx-log-out bx-rotate-180'></i> </a>
 
             </li>
         </ul>
@@ -91,8 +93,10 @@
     <!--===============================================================================================-->
     <script type="text/javascript" src="~/adminassets/js/plugins/chart.js"></script>
     <!--===============================================================================================-->
-    @{
-        IgnoreSection("Scripts");
-    }
+
+    <script src="https://cdn.tiny.cloud/1/go2gbbh0374j92i5q8hajkjsq1odkk8u6lvre7w2yoeislth/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

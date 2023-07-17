@@ -5,42 +5,58 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BoxNews.Models;
-using TechSocial.Models;
 using NuGet.Protocol.Core.Types;
 using TechSocial.Repository.IRepository;
 using TechSocial.Repository;
+using System.Security.Claims;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using TechSocial.Models;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class TblPostsController : Controller
     {
-        private readonly IPostRepository _repository;
+     
+       
+        private readonly IUnitOfWork _unitOfWork;
+
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly UserManager<IdentityUser> _userManager;
 
-
-        public TblPostsController(IPostRepository repository, IWebHostEnvironment webHostEnvironment)
+        public TblPostsController( IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork,UserManager<IdentityUser> userManager)
         {
-            _repository = repository;
+         
             _webHostEnvironment = webHostEnvironment;
+            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         // GET: Admin/TblPosts
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {
-            return View(await _repository.GetAll());
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var categories = _unitOfWork.Category.GetAll().ToList();
+            var users = _userManager.Users.ToList();
+
+            //var users = _repository.GetAccounts();
+            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
+            ViewData["UserName"] = new SelectList(users, "id", "UserName");
+            return View(_unitOfWork.Post.GetAll());
         }
 
         // GET: Admin/TblPosts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
 
             if (id == null)
             {
                 return NotFound();
             }
-            var tblPost = await _repository.Get(id.Value);
+            var tblPost =  _unitOfWork.Post.Get(u=>u.PostId== id);
             if (tblPost == null)
             {
                 return NotFound();
@@ -53,11 +69,12 @@ namespace TechSocial.Areas.Admin.Controllers
         // GET: Admin/TblPosts/Create
         public IActionResult Create()
         {
-            var categories = _repository.GetCategory();
+
+
+            var categories = _unitOfWork.Category.GetAll();
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
 
-            var accounts = _repository.GetAccounts();
-            ViewData["AccountId"] = new SelectList(accounts, "AccountId", "FullName");
+           
             return View();
         }
 
@@ -65,15 +82,38 @@ namespace TechSocial.Areas.Admin.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(TblPost tblPost, IFormFile? file)
+        public IActionResult Create(TblPost tblPost, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
 
                 try
                 {
-                    await _repository.Create(tblPost, file);
-                    return RedirectToAction(nameof(Index));
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    if (file != null && file.Length > 0)
+                    {
+                        string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                        if (fileExtension != ".png" && fileExtension != ".jpg")
+                        {
+                            throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
+                        }
+
+                        string filename = Guid.NewGuid().ToString() + fileExtension;
+                        string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+                        string filePath = Path.Combine(postPath, filename);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        tblPost.ImgSrc = @"\image\Post\" + filename;
+                        tblPost.CreatedAt = DateTime.Now;
+                    }
+
+                    _unitOfWork.Post.Add(tblPost);
+                    _unitOfWork.Save();
+                    return RedirectToAction("Index");
                 }
                 catch (Exception ex)
                 {
@@ -84,18 +124,22 @@ namespace TechSocial.Areas.Admin.Controllers
         }
 
         // GET: Admin/TblPosts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var tblPost = await _repository.Get(id.Value);
+            var tblPost = _unitOfWork.Post.Get(u=>u.PostId == id);
             if (tblPost == null)
             {
                 return NotFound();
 
             }
+            var categories = _unitOfWork.Category.GetAll();
+            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
+
+           
 
             return View(tblPost);
         }
@@ -105,30 +149,68 @@ namespace TechSocial.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TblPost tblPost, IFormFile? file)
+        public IActionResult Edit(int id, TblPost tblPost, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                await _repository.Update(tblPost, file);
-                return RedirectToAction(nameof(Index));
-                //return View("Index");
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null && file.Length > 0)
+                {
+                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                    if (fileExtension != ".png" && fileExtension != ".jpg")
+                    {
+                        throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
+                    }
+
+                    string filename = Guid.NewGuid().ToString() + fileExtension;
+                    string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+                    string filePath = Path.Combine(postPath, filename);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    tblPost.ImgSrc = @"\image\Post\" + filename;
+                }
+
+                tblPost.CreatedAt = DateTime.Now;
+
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                tblPost.AccountId = userId;
+                _unitOfWork.Post.Update(tblPost);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+
             }
-            return View(tblPost);
+           
+                return View(tblPost);
+
+           
         }
 
         // GET: Admin/TblPosts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var tblPost = await _repository.Get(id.Value);
+            var tblPost =  _unitOfWork.Post.Get(u=>u.PostId == id);
             if (tblPost == null)
             {
                 return NotFound();
 
             }
+            var categories = _unitOfWork.Category.Get(u => u.CategoryId == tblPost.CategoryId);
+            ViewData["CategoryName"] = categories.CategoryName;
+            //ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
+
+
+
+
 
             return View(tblPost);
         }
@@ -136,20 +218,51 @@ namespace TechSocial.Areas.Admin.Controllers
         // POST: Admin/TblPosts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var tblPost = await _repository.Delete(id);
-            if (tblPost == null)
+            var tblPost = _unitOfWork.Post.Get(u=>u.PostId==id);
+            if (tblPost != null)
             {
-                return NotFound();
-            }
+                if (tblPost.ImgSrc != null)
+                {
+                    var oldImageUrl = Path.Combine(_webHostEnvironment.WebRootPath, tblPost.ImgSrc.TrimStart('\\'));
 
-            return RedirectToAction(nameof(Index));
+                    if (!string.IsNullOrEmpty(oldImageUrl) && System.IO.File.Exists(oldImageUrl))
+                    {
+                        System.IO.File.Delete(oldImageUrl);
+                    }
+
+
+                }
+                _unitOfWork.Post.Remove(tblPost);
+                _unitOfWork.Save();
+                return RedirectToAction("Index");
+
+
+            }
+            return View(tblPost);
+            
         }
 
         private bool TblPostExists(int id)
         {
           return true;
         }
+
+        // https://localhost:7139/admin/company/getall 
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var users = _userManager.Users.ToList();
+        
+
+
+            return Json(new
+            {
+                data = users
+            });
+
+        }
+
     }
 }

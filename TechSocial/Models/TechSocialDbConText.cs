@@ -1,9 +1,11 @@
-﻿using BoxNews.Models;
+﻿
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace TechSocial.Models
 {
-    public class TechSocialDbConText : DbContext
+    public class TechSocialDbConText : IdentityDbContext<IdentityUser>
     {
         public TechSocialDbConText()
         {
@@ -19,11 +21,12 @@ namespace TechSocial.Models
         public virtual DbSet<TblCategory> tblCategory { get; set; } = null!;
         public virtual DbSet<TblPost> tblPosts { get; set; } = null!;
         public virtual DbSet<TblRating> tblRatings { get; set; } = null!;
-        public virtual DbSet<TblRole> tblRoles { get; set; } = null!;
+    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TblAccount>().ToTable("AspNetUsers");
         }
     }
 }

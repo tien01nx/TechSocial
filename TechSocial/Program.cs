@@ -1,7 +1,9 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TechSocial.Models;
 using TechSocial.Repository;
 using TechSocial.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,11 +13,27 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TechSocialDbConText>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// add quyen nguoi dung 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<TechSocialDbConText>().AddDefaultTokenProviders();
+//ứng dụng sẽ chuyển hướng người dùng đến khi họ cần đăng nhập, đăng xuất hoặc khi họ bị từ chối truy cập.
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LogoutPath = $"/Identity/Account/Logout";
+    options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 
 
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
+// Khai báo add Razor khi dùng identity
+builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+//builder.Services.AddScoped<IPostRepository, hihiih>();
+
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+
 
 
 var app = builder.Build();
@@ -38,10 +56,10 @@ app.MapControllerRoute(
 app.UseRouting();
 
 app.UseAuthorization();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{area=Admin}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BoxNews.Models;
 using TechSocial.Models;
 using NuGet.Protocol.Core.Types;
 using TechSocial.Repository.IRepository;
@@ -15,27 +14,27 @@ namespace TechSocial.Areas.Admin.Controllers
     [Area("Admin")]
     public class TblCategoriesController : Controller
     {
-        private readonly ICategoryRepository  _repository;
+        private readonly IUnitOfWork  _unitOfWork;
 
-        public TblCategoriesController(ICategoryRepository repository)
+        public TblCategoriesController(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+           _unitOfWork = unitOfWork;
         }
 
         // GET: Admin/TblCategories
         public async Task<IActionResult> Index()
         {
-            return View(await _repository.GetAll());
+            return View(_unitOfWork.Category.GetAll());
         }
 
         // GET: Admin/TblCategories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public  IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var tblCategory = await _repository.Get(id.Value);
+            var tblCategory =  _unitOfWork.Category.Get(u=>u.CategoryId == id);
             if (tblCategory == null)
             {
                 return NotFound();
@@ -62,7 +61,8 @@ namespace TechSocial.Areas.Admin.Controllers
 
                 try
                 {
-                    await _repository.Create(tblCategory);
+                   _unitOfWork.Category.Add(tblCategory);
+                    _unitOfWork.Save();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -74,7 +74,7 @@ namespace TechSocial.Areas.Admin.Controllers
         }
 
         // GET: Admin/TblCategories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
 
 
@@ -82,7 +82,7 @@ namespace TechSocial.Areas.Admin.Controllers
             {
                 NotFound();
             }
-            var tblCategory = await (_repository.Get(id.Value));
+            var tblCategory =  _unitOfWork.Category.Get(u=>u.CategoryId == id);
             if (tblCategory == null)
             {
                 return NotFound();
@@ -99,7 +99,8 @@ namespace TechSocial.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.Update(tblCategory);
+                _unitOfWork.Category.Update(tblCategory);
+                _unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
                 //return View("Index");
             }
@@ -107,14 +108,14 @@ namespace TechSocial.Areas.Admin.Controllers
         }
 
         // GET: Admin/TblCategories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
 
             if (id == null)
             {
                 return NotFound();
             }
-            var tblCategory = await _repository.Get(id.Value);
+            var tblCategory = _unitOfWork.Category.Get(u => u.CategoryId == id);
             if (tblCategory == null)
             {
                 return NotFound();
@@ -128,10 +129,16 @@ namespace TechSocial.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var tblCategory = await _repository.Delete(id);
+            var tblCategory =  _unitOfWork.Category.Get(u=>u.CategoryId==id);
             if (tblCategory == null)
             {
                 return NotFound();
+            }
+            else
+            {
+                _unitOfWork.Category.Remove(tblCategory);
+                _unitOfWork.Save();
+
             }
             return RedirectToAction(nameof(Index));
         }

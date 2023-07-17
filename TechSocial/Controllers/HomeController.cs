@@ -1,21 +1,47 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using TechSocial.Models;
+using TechSocial.Models.ViewModel;
+using TechSocial.Repository.IRepository;
 
 namespace TechSocial.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
+            _unitOfWork = unitOfWork;
             _logger = logger;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            return View();
+
+          
+            var categories = _unitOfWork.Category.GetAll().ToList();
+            var users = _userManager.Users.ToList();
+
+            //var users = _repository.GetAccounts();
+            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
+            ViewData["UserName"] = new SelectList(users, "id", "UserName");
+            ListPost listPost = new ListPost()
+            {
+                AdnroidPost = _unitOfWork.Post.GetAll(u=>u.Category.CategoryName.Equals("Android")).ToList(),
+                IosPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("iOS")).ToList(),
+               
+                WindowsPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Windows")).ToList()
+            };
+        
+
+            return View(listPost);
+         
         }
 
         public IActionResult Privacy()

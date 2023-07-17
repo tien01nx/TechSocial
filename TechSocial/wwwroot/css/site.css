@@ -1,4 +1,4 @@
-body {
+﻿body {
     font-family: "Roboto";
     font-weight: 400;
     font-style: regular;
@@ -6,7 +6,13 @@ body {
     line-height: 22px;
     letter-spacing: px;
 }
-
+.description-limit {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5; /* Số dòng muốn hiển thị */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 h1 {
     font-family: "Merriweather";
     font-weight: 700;

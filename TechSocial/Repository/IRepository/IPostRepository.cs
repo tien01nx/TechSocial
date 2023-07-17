@@ -1,17 +1,13 @@
-﻿using BoxNews.Models;
+﻿
+
+using TechSocial.Models;
 
 namespace TechSocial.Repository.IRepository
 {
-    public interface IPostRepository
+    public interface IPostRepository : IRepository<TblPost>
     {
-        Task<IEnumerable<TblPost>> GetAll();
-        Task<TblPost> Get(int id);
-        Task Create(TblPost tblPost, IFormFile? file);
-        Task<TblPost> Delete(int id);
-        Task Update(TblPost tblPost, IFormFile? file);
-        bool Exists(int id);
-        List<TblCategory> GetCategory();
-        List<TblAccount> GetAccounts();
+
+        void Update(TblPost obj);
 
     }
 }
