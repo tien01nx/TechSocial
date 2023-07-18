@@ -113,6 +113,7 @@ namespace TechSocial.Areas.Admin.Controllers
 
                     _unitOfWork.Post.Add(tblPost);
                     _unitOfWork.Save();
+                   
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)

@@ -8,5 +8,7 @@ namespace TechSocial.Repository.IRepository
 
         void Update(TblCategory obj);
 
+
+
     }
 }

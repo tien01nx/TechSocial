@@ -14,7 +14,8 @@ namespace TechSocial.Repository
        
         public IAccountRepository Account { get; private set; }
 
-      
+
+         public IRatingRepository Rating { get; private set; }
 
         public UnitOfWork(TechSocialDbConText db)
         {
@@ -22,6 +23,7 @@ namespace TechSocial.Repository
             Post = new PostRepository(_db);
             Category = new CategoryRepository(_db);
             Account = new AccountRepository(_db);
+           Rating = new RatingRepository(_db);
           
         }
 

@@ -27,16 +27,17 @@ namespace TechSocial.Controllers
           
             var categories = _unitOfWork.Category.GetAll().ToList();
             var users = _userManager.Users.ToList();
+            
 
             //var users = _repository.GetAccounts();
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
             ViewData["UserName"] = new SelectList(users, "id", "UserName");
             ListPost listPost = new ListPost()
             {
-                AdnroidPost = _unitOfWork.Post.GetAll(u=>u.Category.CategoryName.Equals("Android")).ToList(),
+                AdnroidPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Android")).ToList(),
                 IosPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("iOS")).ToList(),
-               
-                WindowsPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Windows")).ToList()
+                WindowsPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Windows")).ToList(),
+                PostNewest = _unitOfWork.Post.GetNewest()
             };
         
 
@@ -44,6 +45,23 @@ namespace TechSocial.Controllers
          
         }
 
+        public IActionResult Details(int id)
+        {
+            ListPost listPost = new ListPost()
+            {
+                TblCategory = new TblCategory(),
+               
+                TblPost = _unitOfWork.Post.Get(u => u.PostId == id, includeProperties: "Category,IdentityUser"),
+               
+                PostNewest = _unitOfWork.Post.GetNewest()
+            };
+        
+            //// includeProperties: "Category" lấy thuộc tính từ bảng khác, khóa ngoại, 
+            //TblPost detail = _unitOfWork.Post.Get(u => u.PostId == id,includeProperties: "Category,IdentityUser");
+
+
+            return View(listPost);
+        }
         public IActionResult Privacy()
         {
             return View();

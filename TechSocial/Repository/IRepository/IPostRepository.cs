@@ -8,6 +8,7 @@ namespace TechSocial.Repository.IRepository
     {
 
         void Update(TblPost obj);
-
+        IEnumerable<TblPost> GetNewest();
+       
     }
 }

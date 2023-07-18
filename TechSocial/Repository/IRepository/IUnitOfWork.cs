@@ -6,6 +6,8 @@
         IPostRepository Post { get; }
    
         IAccountRepository Account { get; }
+
+       IRatingRepository Rating { get; }
         void Save();
     }
 }

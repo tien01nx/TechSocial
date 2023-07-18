@@ -28,307 +28,66 @@
 
                                                         <div class="swiper-slide">
                                                             <div class="digiqole-main-slider digiqole-blog-slider">
-                                                                <div class="item post-slide-item"
-                                                                     style="background-image:url(~/image/content/image1.jpg)">
+                                                                @foreach (var item in Model.PostNewest.OrderByDescending(u => u.CreatedAt))
+                                                                {
 
-                                                                    <div class="post-content">
+                                                                    <div class="item post-slide-item"
+                                                                         style="background-image:url(@item.ImgSrc)">
 
+                                                                        <div class="post-content">
 
+                                                                            <a class="post-cat"
+                                                                                  asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
+                                                                               style="background-color:;color:#ffffff">
 
-                                                                        <a class="post-cat"
-                                                                           href="category/technology/index.html"
-                                                                           style="background-color:;color:#ffffff">
-
-                                                                            Technology
-                                                                        </a>
-
-
-                                                                        <h3 class="post-title lg">
-                                                                            <a href="2020/04/14/connecting-people-with-technology/index.html">
-                                                                                Connecting people with Technology
+                                                                               @item.Category.CategoryName
                                                                             </a>
-                                                                        </h3>
 
-                                                                        <ul class="post-meta-info  ">
-                                                                            <li class="author">
-                                                                                <i class="ts-icon ts-icon-user-solid"></i>
-                                                                                <a href="author/digiQoles/index.html">
-                                                                                    digiQoles
+
+                                                                            <h3 class="post-title lg">
+                                                                                    <a  asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId">
+                                                                                   @item.Title
                                                                                 </a>
-                                                                            </li>
+                                                                            </h3>
 
-                                                                            <li>
-                                                                                <i class="ts-icon ts-icon-clock-regular"></i>
-                                                                                April 14, 2020
-                                                                            </li>
+                                                                            <ul class="post-meta-info  ">
+                                                                                <li class="author">
+                                                                                    <i class="ts-icon ts-icon-user-solid"></i>
+                                                                                    <a href="author/digiQoles/index.html">
+                                                                                       @item.IdentityUser.UserName
+                                                                                    </a>
+                                                                                </li>
 
-                                                                            <li class="active">
-                                                                                <i class="ts-icon ts-icon-fire"></i>
-                                                                                273
-                                                                            </li>
-                                                                        </ul>
+                                                                                <li>
+                                                                                    <i class="ts-icon ts-icon-clock-regular"></i>
+                                                                                  @item.CreatedAt
+                                                                                </li>
 
-                                                                        <p>
-                                                                            The same systems we built to handle
-                                                                            peaks like the Cyber Monday online
-                                                                            shopping surge, or to stream the World
-                                                                            Cup finals, support increased traffic
-                                                                        </p>
+                                                                                <li class="active">
+                                                                                    <i class="ts-icon ts-icon-fire"></i>
+                                                                                    273
+                                                                                </li>
+                                                                            </ul>
 
-                                                                        <a class="post-readmore"
-                                                                           href="2020/04/14/connecting-people-with-technology/index.html">
-                                                                            Keep Reading <i class="ts-icon ts-icon-arrow-right"></i>
-                                                                        </a>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div class="swiper-slide">
-                                                            <div class="digiqole-main-slider digiqole-blog-slider">
-                                                                <div class="item post-slide-item"
-                                                                     style="background-image:url(~/image/content/image7.jpg)">
-
-                                                                    <div class="post-content">
+                                                                            @{
+                                                                                var contentLines = item.Content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                                                                                var limitedContent = string.Join("\n", contentLines.Take(1));
+                                                                            }
+                                                                            <p class="description-limit">
+                                                                                @* @Html.Raw(item.Content) *@
+                                                                                @Html.Raw(limitedContent)
+                                                                            </p>
 
 
-
-                                                                        <a class="post-cat"
-                                                                           href="category/technology/index.html"
-                                                                           style="background-color:;color:#ffffff">
-
-                                                                            Technology
-                                                                        </a>
-
-
-                                                                        <h3 class="post-title lg">
-                                                                            <a href="2020/04/12/everything-announced-at-google-summit/index.html">
-                                                                                Everything Announced at Google
-                                                                                Summit
+                                                                            <a class="post-readmore"
+                                                                                     asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId">
+                                                                                Keep Reading <i class="ts-icon ts-icon-arrow-right"></i>
                                                                             </a>
-                                                                        </h3>
 
-                                                                        <ul class="post-meta-info  ">
-                                                                            <li class="author">
-                                                                                <i class="ts-icon ts-icon-user-solid"></i>
-                                                                                <a href="author/digiQoles/index.html">
-                                                                                    digiQoles
-                                                                                </a>
-                                                                            </li>
-
-                                                                            <li>
-                                                                                <i class="ts-icon ts-icon-clock-regular"></i>
-                                                                                April 12, 2020
-                                                                            </li>
-
-                                                                            <li class="active">
-                                                                                <i class="ts-icon ts-icon-fire"></i>
-                                                                                169
-                                                                            </li>
-                                                                        </ul>
-
-                                                                        <p>
-                                                                            The same systems we built to handle
-                                                                            peaks like the Cyber Monday online
-                                                                            shopping surge, or to stream the World
-                                                                            Cup finals, support increased traffic
-                                                                        </p>
-
-                                                                        <a class="post-readmore"
-                                                                           href="2020/04/12/everything-announced-at-google-summit/index.html">
-                                                                            Keep Reading <i class="ts-icon ts-icon-arrow-right"></i>
-                                                                        </a>
-
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div class="swiper-slide">
-                                                            <div class="digiqole-main-slider digiqole-blog-slider">
-                                                                <div class="item post-slide-item"
-                                                                     style="background-image:url(~/image/content/image5.jpg)">
-
-                                                                    <div class="post-content">
-
-
-
-                                                                        <a class="post-cat"
-                                                                           href="category/travel/index.html"
-                                                                           style="background-color:;color:#ffffff">
-
-                                                                            Travel
-                                                                        </a>
-
-
-                                                                        <h3 class="post-title lg">
-                                                                            <a href="2020/04/12/porsche-taylor-put-all-women-in-the-seat/index.html">
-                                                                                Porsche Taylor Put All Women in the
-                                                                                Seat
-                                                                            </a>
-                                                                        </h3>
-
-                                                                        <ul class="post-meta-info  ">
-                                                                            <li class="author">
-                                                                                <i class="ts-icon ts-icon-user-solid"></i>
-                                                                                <a href="author/digiQoles/index.html">
-                                                                                    digiQoles
-                                                                                </a>
-                                                                            </li>
-
-                                                                            <li>
-                                                                                <i class="ts-icon ts-icon-clock-regular"></i>
-                                                                                April 12, 2020
-                                                                            </li>
-
-                                                                            <li class="active">
-                                                                                <i class="ts-icon ts-icon-fire"></i>
-                                                                                295
-                                                                            </li>
-                                                                        </ul>
-
-                                                                        <p>
-                                                                            The same systems we built to handle
-                                                                            peaks like the Cyber Monday online
-                                                                            shopping surge, or to stream the World
-                                                                            Cup finals, support increased traffic
-                                                                        </p>
-
-                                                                        <a class="post-readmore"
-                                                                           href="2020/04/12/porsche-taylor-put-all-women-in-the-seat/index.html">
-                                                                            Keep Reading <i class="ts-icon ts-icon-arrow-right"></i>
-                                                                        </a>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div class="swiper-slide">
-                                                            <div class="digiqole-main-slider digiqole-blog-slider">
-                                                                <div class="item post-slide-item"
-                                                                     style="background-image:url(~/image/content/image2.jpg)">
-
-                                                                    <div class="post-content">
-
-
-
-                                                                        <a class="post-cat"
-                                                                           href="category/fashion/index.html"
-                                                                           style="background-color:;color:#ffffff">
-
-                                                                            Fashion
-                                                                        </a>
-
-
-                                                                        <h3 class="post-title lg">
-                                                                            <a href="2020/04/08/protecting-you-from-phishing-limit/index.html">
-                                                                                Protecting you from Phishing Limit
-                                                                            </a>
-                                                                        </h3>
-
-                                                                        <ul class="post-meta-info  ">
-                                                                            <li class="author">
-                                                                                <i class="ts-icon ts-icon-user-solid"></i>
-                                                                                <a href="author/digiQoles/index.html">
-                                                                                    digiQoles
-                                                                                </a>
-                                                                            </li>
-
-                                                                            <li>
-                                                                                <i class="ts-icon ts-icon-clock-regular"></i>
-                                                                                April 8, 2020
-                                                                            </li>
-
-                                                                            <li class="active">
-                                                                                <i class="ts-icon ts-icon-fire"></i>
-                                                                                179
-                                                                            </li>
-                                                                        </ul>
-
-                                                                        <p>
-                                                                            The same systems we built to handle
-                                                                            peaks like the Cyber Monday online
-                                                                            shopping surge, or to stream the World
-                                                                            Cup finals, support increased traffic
-                                                                        </p>
-
-                                                                        <a class="post-readmore"
-                                                                           href="2020/04/08/protecting-you-from-phishing-limit/index.html">
-                                                                            Keep Reading <i class="ts-icon ts-icon-arrow-right"></i>
-                                                                        </a>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-
-
-                                                        <div class="swiper-slide">
-                                                            <div class="digiqole-main-slider digiqole-blog-slider">
-                                                                <div class="item post-slide-item"
-                                                                     style="background-image:url(~/image/content/image6.jpg)">
-
-                                                                    <div class="post-content">
-
-
-
-                                                                        <a class="post-cat"
-                                                                           href="category/technology/index.html"
-                                                                           style="background-color:;color:#ffffff">
-
-                                                                            Technology
-                                                                        </a>
-
-
-                                                                        <h3 class="post-title lg">
-                                                                            <a href="2020/04/08/exploring-the-hidden-gardens-of-imperial-2/index.html">
-                                                                                Everything Announced at Google
-                                                                                Summit
-                                                                            </a>
-                                                                        </h3>
-
-                                                                        <ul class="post-meta-info  ">
-                                                                            <li class="author">
-                                                                                <i class="ts-icon ts-icon-user-solid"></i>
-                                                                                <a href="author/digiQoles/index.html">
-                                                                                    digiQoles
-                                                                                </a>
-                                                                            </li>
-
-                                                                            <li>
-                                                                                <i class="ts-icon ts-icon-clock-regular"></i>
-                                                                                April 8, 2020
-                                                                            </li>
-
-                                                                            <li class="active">
-                                                                                <i class="ts-icon ts-icon-fire"></i>
-                                                                                136
-                                                                            </li>
-                                                                        </ul>
-
-                                                                        <p>
-                                                                            The same systems we built to handle
-                                                                            peaks like the Cyber Monday online
-                                                                            shopping surge, or to stream the World
-                                                                            Cup finals, support increased traffic
-                                                                        </p>
-
-                                                                        <a class="post-readmore"
-                                                                           href="2020/04/08/exploring-the-hidden-gardens-of-imperial-2/index.html">
-                                                                            Keep Reading <i class="ts-icon ts-icon-arrow-right"></i>
-                                                                        </a>
-
-                                                                    </div>
-                                                                </div>
+                                                                }
+                                                                
                                                             </div>
 
                                                         </div>
@@ -565,7 +324,7 @@
                                                     <div class="post-block-style post-float align-items-center row">
                                                         <div class="col-lg-6">
                                                             <div class="post-thumb d-flex">
-                                                                <a href="2020/04/12/porsche-taylor-put-all-women-in-the-seat/index.html"
+                                                                <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                                    rel="bookmark"
                                                                    title="Porsche Taylor Put All Women in the Seat">
                                                                     <img loading="lazy" width="455" height="300"
@@ -581,7 +340,7 @@
                                                                     @item.Category.CategoryName
                                                                 </a>
                                                                 <h3 class="post-title">
-                                                                    <a href="2020/04/12/porsche-taylor-put-all-women-in-the-seat/index.html"
+                                                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                                        rel="bookmark"
                                                                       >
                                                                       @item.Title
@@ -611,7 +370,7 @@
                                                                 </p>
 
                                                                 <a class="post-readmore"
-                                                                   href="2020/04/12/porsche-taylor-put-all-women-in-the-seat/index.html">
+                                                                   asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId">
                                                                     Read More <i class="ts-icon ts-icon-arrow-right"></i>
                                                                 </a>
 
@@ -727,7 +486,7 @@
 
 
                                                             <h3 class="post-title md">
-                                                                <a href="2020/04/14/connecting-people-with-technology/index.html"
+                                                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                                    rel="bookmark"
                                                                    >
                                                                    @item.Title
@@ -754,7 +513,7 @@
                                                             </div>
                                                             <div class="post-thumb-wrap">
                                                                 <div class="post-thumb ts-resize">
-                                                                    <a href="2020/04/14/connecting-people-with-technology/index.html"
+                                                                        <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId" 
                                                                        rel="bookmark"
                                                                        title="Connecting people with Technology">
                                                                         <img width="600" height="398"
@@ -775,7 +534,7 @@
                                                                 </p>
 
                                                             <a class="post-readmore"
-                                                               href="2020/04/14/connecting-people-with-technology/index.html">
+                                                                   asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId">
                                                                 read more <i class="ts-icon ts-icon-arrow-right"></i>
                                                             </a>
 
@@ -813,7 +572,7 @@
 
                                             <div class="horizontal-post-block">
 
-
+@* 
                                                 <div class="post-block-style post-float align-items-center row">
                                                     <div class="col-lg-6">
                                                         <div class="post-thumb d-flex">
@@ -869,27 +628,31 @@
 
                                                     </div>
 
-                                                </div><!-- Post block style end -->
+                                                </div><!-- Post block style end --> *@
+
+
+
+                                             @foreach (var item in Model.AdnroidPost)
+                                                {
 
                                                 <div class="post-block-style post-float row align-items-center">
                                                     <div class="col-lg-6">
                                                         <div class="post-content media-body align-self-center">
                                                             <a class="post-cat"
-                                                               href="category/technology/index.html">
-                                                                Technology
+                                                                   asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId">
+                                                                @item.Category.CategoryName
                                                             </a>
                                                             <h3 class="post-title">
-                                                                <a href="2020/04/08/exploring-the-hidden-gardens-of-imperial-2/index.html"
+                                                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                                    rel="bookmark"
-                                                                   title="Everything Announced at Google Summit">
-                                                                    Everything
-                                                                    Announced at Google Summit
+                                                                   >
+                                                                   @item.Title
                                                                 </a>
                                                             </h3>
                                                             <div class="post-meta">
                                                                 <span class="post-date">
                                                                     <i class="ts-icon ts-icon-clock-regular"></i>
-                                                                    April 8, 2020
+                                                                   @item.CreatedAt
                                                                 </span>
 
                                                                 <span class="post-view">
@@ -897,14 +660,17 @@
                                                                     136
                                                                 </span>
                                                             </div>
-                                                            <p>
-                                                                The same systems we built to handle peaks like the
-                                                                Cyber Monday online shopping surge, or to stream the
-                                                                World Cup finals, support increased traffic
-                                                            </p>
+                                                                @{
+                                                                    var contentLines = item.Content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                                                                    var limitedContent = string.Join("\n", contentLines.Take(1));
+                                                                }
+                                                                <p class="description-limit">
+                                                                    @* @Html.Raw(item.Content) *@
+                                                                    @Html.Raw(limitedContent)
+                                                                </p>
 
                                                             <a class="post-readmore"
-                                                               href="2020/04/08/exploring-the-hidden-gardens-of-imperial-2/index.html">
+                                                                   asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId">
                                                                 Read More <i class="ts-icon ts-icon-arrow-right"></i>
                                                             </a>
 
@@ -916,7 +682,7 @@
                                                                rel="bookmark"
                                                                title="Everything Announced at Google Summit">
                                                                 <img width="455" height="300"
-                                                                     src="~/image/content/image6-455x300.jpg"
+                                                                     src="@item.ImgSrc"
                                                                      class="attachment-digiqole-small size-digiqole-small wp-post-image"
                                                                      alt="" decoding="async" loading="lazy" />
                                                             </a>
@@ -925,7 +691,7 @@
 
 
                                                 </div><!-- Post block style end -->
-
+                                            }
                                             </div><!-- block-item6 -->
 
                                         </div>
@@ -1084,26 +850,29 @@
                                         <div class="elementor-widget-container">
                                             <div class="recent-posts-widget post-list-item">
                                                 <div class="post-tab-list">
-                                                    @foreach (var item in Model.AdnroidPost)
+                                                    @foreach (var item in Model.PostNewest.OrderByDescending(u=>u.CreatedAt))
                                                     {
                                                         <div class="post-content media">
                                                             <div class="post-thumb">
-                                                                <a href="2020/04/14/connecting-people-with-technology/index.html"
+                                                                <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                                    rel="bookmark"
-                                                                   title="Everything Announced at Google Summit">
+                                                                  >
                                                                     <img class="digiqole-sm-bg-img"
                                                                          
                                                                           src="@item.ImgSrc"/>
                                                                 </a>
                                                             </div>
                                                             <div class="post-info media-body">
-                                                                <a class="post-cat only-color"
+                                                                <h5 class="post-cat  ">
+                                                              <a 
                                                                    href="category/technology/index.html"
                                                                    style="color:">
                                                                     @item.Category.CategoryName
                                                                 </a>
+
+                                                                </h5>
                                                                 <h3 class="post-title">
-                                                                    <a href="2020/04/14/connecting-people-with-technology/index.html"
+                                                                    <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                                        rel="bookmark"
                                                                      >
                                                                         @item.Title

@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using TechSocial.Models;
 using TechSocial.Repository.IRepository;
 
@@ -12,7 +13,18 @@ namespace TechSocial.Repository
             _db = db;
         }
 
+    
 
+        public IEnumerable<TblPost> GetNewest()
+        {
+            var newestPosts = _db.tblPosts
+         .GroupBy(p => p.Category.CategoryName)
+         .Select(g => g.OrderByDescending(p => p.CreatedAt).FirstOrDefault())
+         .ToList();
+
+            return newestPosts;
+        }
+        
 
         public void Update(TblPost obj)
         {
