@@ -47,7 +47,7 @@
                                                      data-widget_type="digiqole-logo.default">
                                                     <div class="elementor-widget-container">
                                                         <div class="digiqole-widget-logo">
-                                                            <a href="index.html" class="logo">
+                                                            <a href="/Home/Index" class="logo">
                                                                 <img src="~/image/icon/Logo_DiuThanh_OK.png"
                                                                      alt="Personal Blog">
                                                             </a>
@@ -92,11 +92,13 @@
                                                                         <a href="#" class="ekit-menu-nav-link">Contact</a>
                                                                     </li>
                                                                     <li id="menu-item-594" data-vertical-menu=750px>
+
                                                                         <div class="elementor-widget-wrap">
                                                                             <div class="elementor-element elementor-element-97d936a header-search elementor-widget__width-auto elementor-widget elementor-widget-wp-widget-search"
                                                                                  data-id="97d936a" data-element_type="widget"
                                                                                  data-widget_type="wp-widget-search.default">
-                                                                                <div class="elementor-widget-container">
+                                                                                 <!--search-->
+                                                                              @*   <div class="elementor-widget-container">
                                                                                     <form method="get"
                                                                                           action="#"
                                                                                           class="digiqole-serach xs-search-group">
@@ -108,6 +110,18 @@
                                                                                             </button>
                                                                                         </div>
                                                                                     </form>
+                                                                                </div> *@
+
+                                                                                <div class="search-width-height d-flex">
+                                                                                    <div class="dropdown flex-grow-1">
+                                                                                        <input class="form-control" type="search" placeholder="Search" id="searchInput" name="search" autocomplete="off">
+                                                                                        <ul class="dropdown-menu" id="searchResults" aria-labelledby="searchInput">
+                                                                                            <!-- Search results will be inserted here -->
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <button class="input-group-btn search-button">
+                                                                                        <i class="fa fa-search" aria-hidden="true"></i>
+                                                                                    </button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -188,7 +202,7 @@
                                                      data-widget_type="digiqole-logo.default">
                                                     <div class="elementor-widget-container">
                                                         <div class="digiqole-widget-logo">
-                                                            <a href="index.html" class="logo">
+                                                            <a asp-action="Index" asp-controller="Home" class="logo">
                                                                 <img src="~/image/icon/Logo_DiuThanh_white_OK.png"
                                                                      alt="Personal Blog">
                                                             </a>
@@ -240,6 +254,8 @@
             </div>
         </div>
     </footer>
+    <script src="~/js/search.js"></script>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -8,10 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TechSocial.Models;
 using NuGet.Protocol.Core.Types;
 using TechSocial.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles ="Admin")]
     public class TblCategoriesController : Controller
     {
         private readonly IUnitOfWork  _unitOfWork;

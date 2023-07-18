@@ -72,5 +72,21 @@ namespace TechSocial.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        //[HttpGet]
+        public IActionResult Search()
+        {
+            var all  = _unitOfWork.Post.GetAll(includeProperties:"Category,IdentityUser").Select(p => new PostDTO
+            {
+                Id = p.PostId,
+                Title = p.Title,
+                UserName = p.IdentityUser.UserName,
+                CategoryName = p.Category.CategoryName
+             
+            });
+
+            return Json(all);
+        }
     }
 }
