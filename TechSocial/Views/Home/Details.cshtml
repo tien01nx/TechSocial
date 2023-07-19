@@ -83,7 +83,7 @@
                                      <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/author/digiqoles/">
                                     @if (Model.TblPost != null)
                                     {
-                                        @Model.TblPost.IdentityUser.UserName
+                                        @(Model.TblPost.IdentityUser != null && Model.TblPost.IdentityUser.UserName != null ? Model.TblPost.IdentityUser.UserName : "Dịu Thanh")
                                     }
                                          
                                      </a>
@@ -456,19 +456,19 @@
                                 </span>
                             </p>
                             <div class="comment-info row">
-                                <div class="col-md-6">
+                               @*  <div class="col-md-6">
                                     <input placeholder="Enter Name" id="author"
                                            class="form-control" name="author" type="text" value="" size="30"
                                            aria-required='true' />
-                                </div>
-                                <div class="col-md-6">
-                                    <input placeholder="Enter Email" id="email" name="email" class="form-control"
-                                           type="email" value="" size="30" aria-required='true' />
-                                </div>
+                                </div> *@
                                 <div class="col-md-12">
+                                    <p> Your Name: 
+                                           </p>
+                                </div>
+                              @*   <div class="col-md-12">
                                     <input placeholder="Enter Website" id="url" name="url"
                                            class="form-control" type="url" value="" size="30" />
-                                </div>
+                                </div> *@
                             </div>
                             <p class="comment-form-cookies-consent">
                                 <input id="wp-comment-cookies-consent"

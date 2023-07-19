@@ -22,4 +22,11 @@
     <Folder Include="wwwroot\image\Post\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\lib\css\swiper.min48f5.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

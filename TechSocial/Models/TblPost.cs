@@ -48,5 +48,8 @@ namespace TechSocial.Models
         public TblCategory? Category { get; set; }
         [ValidateNever]
         public List<TblRating> TblRatings { get; set; }
+
+
+
     }
 }

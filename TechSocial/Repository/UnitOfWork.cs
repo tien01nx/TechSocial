@@ -17,6 +17,7 @@ namespace TechSocial.Repository
 
          public IRatingRepository Rating { get; private set; }
 
+        public ICommentRepository Comment { get; private set; } 
         public UnitOfWork(TechSocialDbConText db)
         {
             _db = db;

@@ -210,9 +210,6 @@ namespace TechSocial.Areas.Admin.Controllers
             //ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
 
 
-
-
-
             return View(tblPost);
         }
 

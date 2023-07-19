@@ -8,6 +8,7 @@
         IAccountRepository Account { get; }
 
        IRatingRepository Rating { get; }
+        ICommentRepository Comment { get; }
         void Save();
     }
 }
