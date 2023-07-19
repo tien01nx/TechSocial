@@ -14,7 +14,7 @@ namespace TechSocial.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public HomeController(ILogger<HomeController> logger,IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
@@ -24,10 +24,10 @@ namespace TechSocial.Controllers
         public IActionResult Index()
         {
 
-          
+
             var categories = _unitOfWork.Category.GetAll().ToList();
             var users = _userManager.Users.ToList();
-            
+
 
             //var users = _repository.GetAccounts();
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
@@ -39,10 +39,10 @@ namespace TechSocial.Controllers
                 WindowsPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Windows")).ToList(),
                 PostNewest = _unitOfWork.Post.GetNewest()
             };
-        
+
 
             return View(listPost);
-         
+
         }
 
         public IActionResult Details(int id)
@@ -50,12 +50,12 @@ namespace TechSocial.Controllers
             ListPost listPost = new ListPost()
             {
                 TblCategory = new TblCategory(),
-               
+
                 TblPost = _unitOfWork.Post.Get(u => u.PostId == id, includeProperties: "Category,IdentityUser"),
-               
+
                 PostNewest = _unitOfWork.Post.GetNewest()
             };
-        
+
             //// includeProperties: "Category" lấy thuộc tính từ bảng khác, khóa ngoại, 
             //TblPost detail = _unitOfWork.Post.Get(u => u.PostId == id,includeProperties: "Category,IdentityUser");
 
@@ -73,7 +73,7 @@ namespace TechSocial.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        [HttpPost]
+        // [HttpPost]
 
         //public IActionResult CreateComment(TblComments tblComments)
         //{
@@ -82,16 +82,18 @@ namespace TechSocial.Controllers
         //}
 
 
-        //[HttpGet]
+        [HttpGet]
         public IActionResult Search()
         {
-            var all  = _unitOfWork.Post.GetAll(includeProperties:"Category,IdentityUser").Select(p => new PostDTO
+            var all = _unitOfWork.Post.GetAll(includeProperties: "Category,IdentityUser").Select(p => new PostDTO
             {
                 Id = p.PostId,
                 Title = p.Title,
                 UserName = p.IdentityUser.UserName,
-                CategoryName = p.Category.CategoryName
-             
+                Image= p.ImgSrc,
+                CategoryName = p.Category.CategoryName,
+                Created = p.CreatedAt
+
             });
 
             return Json(all);

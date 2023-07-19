@@ -13,7 +13,7 @@ namespace TechSocial.Repository
             _db = db;
         }
 
-    
+     
 
         public IEnumerable<TblPost> GetNewest()
         {
