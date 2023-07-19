@@ -1,18 +1,23 @@
 ﻿$(document).ready(function () {
-    $.ajax({
-        url: '/Post/Search', // Cập nhật url phù hợp với đường dẫn tới phương thức GetAll
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            // Xử lý dữ liệu trả về
-            renderData(data);
-        },
-        error: function (error) {
-            console.log(error);
-        }
-    });
-});
+    // Parse the CategoryName from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryName = urlParams.get('CategoryName');
 
+    if (categoryName) {
+        $.ajax({
+            url: '/Post/Search?CategoryName=' + categoryName,
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                renderData(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+});
 
 function renderData(data) {
     // Biến dùng để lưu HTML

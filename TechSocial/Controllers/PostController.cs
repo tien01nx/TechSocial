@@ -22,9 +22,9 @@ namespace TechSocial.Controllers
             return View(posts);
         }
 
-        public IActionResult Search()
+        public IActionResult Search(string CategoryName)
         {
-            var all = _unitOfWork.Post.GetAll(includeProperties: "Category,IdentityUser").Select(p => new PostDTO
+            var all = _unitOfWork.Post.GetAll(u=>u.Category.CategoryName.Equals(CategoryName),includeProperties: "Category,IdentityUser").Select(p => new PostDTO
             {
                 Id = p.PostId,
                 Title = p.Title,
