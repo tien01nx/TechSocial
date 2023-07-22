@@ -1,6 +1,7 @@
-﻿@model ListPost
+﻿@using Microsoft.AspNetCore.Identity;
+@model ListPost
 
-
+@inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,25 +12,27 @@
         <div class="col-lg-12">
             <ol class="breadcrumb" data-wow-duration="2s">
                 <li>
-                    <i class="ts-icon ts-icon-home-solid"></i> <a href="https://demo.themewinter.com/wp/digiqoles">Home</a><i class="ts-icon ts-icon-angle-right"></i>
+                     <a asp-action="Index" asp-controller="Home">Home</a><i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </li>
-                <li>
+                <li >
+                    <a asp-action="Index" asp-controller="Home" >
                     @if (Model.TblPost != null)
                     {
-                    <a href=https://demo.themewinter.com/wp/digiqoles/personal-blog/category/travel>@Model.TblPost.Category.CategoryName</a>
+                    <a asp-action="Index" asp-controller="Home" >@Model.TblPost.Category.CategoryName</a>
                        
                     }
-
+                    </a>
                 </li>
                 <li>
-                    <i class="ts-icon ts-icon-angle-right"></i>
+                  
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
 
                     @if (Model.TblPost != null)
                     {
                         @Model.TblPost.Title
 
                     }
-                    
+                   
                 </li>
             </ol>
         </div>
@@ -60,7 +63,7 @@
                         <ul class="post-meta">
                             <li class="post-category">
                                 <a class="post-cat"
-                                   href="https://demo.themewinter.com/wp/digiqoles/personal-blog/category/travel/"
+                                  
                                    style=" background-color:;color:#ffffff ">
                                     <span class="before" style="background-color:;color:#ffffff "></span>
 
@@ -75,12 +78,11 @@
                                 </a>
                             </li>
                             <li class="post-author">
-                                <img alt=''
-                                     src='https://secure.gravatar.com/avatar/66ac99bcb2f49331067e931de0dba35f?s=55&amp;d=mm&amp;r=g'
-                                     srcset='https://secure.gravatar.com/avatar/66ac99bcb2f49331067e931de0dba35f?s=110&#038;d=mm&#038;r=g 2x'
+                                <img alt='avatar'
+                                    src="~/image/imageUser.jpg"
                                      class='avatar avatar-55 photo' height='55' width='55' loading='lazy'
                                      decoding='async' />
-                                     <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/author/digiqoles/">
+                                     <a asp-action="Index" asp-controller="User" asp-route-Id="@Model.TblPost.IdentityUser.Id">
                                     @if (Model.TblPost != null)
                                     {
                                         @(Model.TblPost.IdentityUser != null && Model.TblPost.IdentityUser.UserName != null ? Model.TblPost.IdentityUser.UserName : "Dịu Thanh")
@@ -99,21 +101,12 @@
                                 }
                               
                             </li>
-                            <li class="post-comment">
-                                <i class="ts-icon ts-icon-comments"></i><a href="#"
-                                                                           class="comments-link">0 </a>
-                            </li>
+                          
                             <li class="meta-post-view">
-                                <i class="ts-icon ts-icon-fire"></i>
-                                295
+                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                @Model.TblPost.PostsView
                             </li>
-                            <li class="read-time">
-                                <span class="post-read-time">
-                                    <i class="ts-icon ts-icon-eye-solid"></i><span class="read-time">
-                                        
-                                    </span>
-                                </span>
-                            </li>
+                         
                         </ul>
                     </header><!-- header end -->
 
@@ -146,109 +139,7 @@
                             </p>
 
 
-                          @*   <p>
-                                The same systems we built to handle peaks like the Cyber Monday online shopping
-                                surge, or to stream the World Cup finals, support increased traffic as people turn
-                                to Google to find news, connect with others, and get work done during this pandemic.
-                            </p>
-
-
-
-                            <p>
-                                Cyber Monday online shopping surge, or to stream the World Cup finals, support
-                                increased traffic as people turn to Google to find news, connect with others, and
-                                get work done during this pandemic And while we’re seeing more usage for products
-                                like Hangouts Meet, and different usage patterns in products like YouTube, peak
-                                traffic levels.
-                            </p>
-
-
-
-                            <div class="wp-block-columns is-layout-flex wp-container-3">
-                                <div class="wp-block-column is-layout-flow">
-                                    <blockquote class="wp-block-quote has-text-align-left is-style-default">
-                                        <p>
-                                            World Cup finals have<br>support increased all<br>traffic as people
-                                            turn<br>to Meriqo
-                                        </p><cite>&#8211; Kesrick Willams</cite>
-                                    </blockquote>
-                                </div>
-
-
-
-                                <div class="wp-block-column is-layout-flow">
-                                    <p>
-                                        The same systems we built to handle peaks like the Cyber Monday online
-                                        shopping surge, or to stream the World Cup finals, support increased traffic
-                                        as people turn to Google to find news, connect with others, and get work
-                                        done during this pandemic And while we’re seeing.
-                                    </p>
-
-
-
-                                    <p>
-                                        The same systems we built to handle peaks like the Cyber Monday online
-                                        shopping surge, or to stream the World Cup finals, support increased traffic
-                                        as people turn to Google to find news.
-                                    </p>
-                                </div>
-                            </div>
-
-
-
-                            <div class="wp-block-columns is-layout-flex wp-container-6">
-                                <div class="wp-block-column is-layout-flow">
-                                    <figure class="wp-block-image size-large">
-                                        <img decoding="async" width="730"
-                                             height="500"
-                                             src="../../../../wp-content/uploads/sites/4/2020/04/image5.jpg" alt=""
-                                             class="wp-image-221"
-                                             srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image5.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image5-300x205.jpg 300w"
-                                             sizes="(max-width: 730px) 100vw, 730px" />
-                                    </figure>
-                                </div>
-
-
-
-                                <div class="wp-block-column is-layout-flow">
-                                    <figure class="wp-block-image size-large">
-                                        <img decoding="async" loading="lazy"
-                                             width="730" height="500"
-                                             src="../../../../wp-content/uploads/sites/4/2020/04/image6.jpg" alt=""
-                                             class="wp-image-63"
-                                             srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image6.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image6-300x205.jpg 300w"
-                                             sizes="(max-width: 730px) 100vw, 730px" />
-                                    </figure>
-                                </div>
-                            </div>
-
-
-
-                            <p>
-                                The same systems we built to handle peaks like the Cyber Monday online shopping
-                                surge, or to stream the World Cup finals, support increased traffic as people turn
-                                to Google to find news, connect with others, and get work done during this pandemic
-                                And while we’re seeing more usage for products like Hangouts Meet, and different
-                                usage patterns in products like YouTube, peak traffic levels are well within our
-                                ability to handle the load.
-                            </p>
-
-
-
-                            <ul>
-                                <li>Cyber Monday online shopping surge</li>
-                                <li>different usage patterns in products like YouTube</li>
-                                <li>The same systems we built to handle peaks</li>
-                            </ul>
-
-
-
-                            <p>
-                                While we’re seeing more usage for products like Hangouts Meet, and different usage
-                                patterns in products like YouTube, peak traffic levels are well within our ability
-                                to handle the load.
-                            </p>
- *@
+                         
 
                             <p><!-- /wp:heading --></p>
                             <div class="post-footer clearfix">
@@ -260,181 +151,36 @@
 
                 <div class="author-box solid-bg">
                     <div class="author-img pull-left">
-                        <img alt=''
-                             src='https://secure.gravatar.com/avatar/66ac99bcb2f49331067e931de0dba35f?s=96&amp;d=mm&amp;r=g'
-                             srcset='https://secure.gravatar.com/avatar/66ac99bcb2f49331067e931de0dba35f?s=192&#038;d=mm&#038;r=g 2x'
+                        <img alt='avatar'
+                             src="~/image/imageUser.jpg"
                              class='avatar avatar-96 photo' height='96' width='96' loading='lazy' decoding='async' />
                     </div>
                     <div class="author-info">
-                        <h3>digiQoles</h3>
+                        <h3>@Model.TblPost.IdentityUser.UserName</h3>
                         <p class="author-url">
-                            <a href="https://demo.themewinter.com/wp/digiqoles" target="_blank">
-                                https://demo.themewinter.com/wp/digiqoles
-                            </a>
+                           Author
                         </p>
                         <p>
                         </p>
                     </div>
                 </div> <!-- Author box end -->
 
-                <nav class="post-navigation clearfix">
-                    <div class="post-previous">
-                        <img width="730" height="500"
-                             src="../../../../wp-content/uploads/sites/4/2020/04/image2.jpg"
-                             class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt=""
-                             decoding="async" loading="lazy"
-                             srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image2.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image2-300x205.jpg 300w"
-                             sizes="(max-width: 730px) 100vw, 730px" />
-                        <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/08/protecting-you-from-phishing-limit/">
-                            <span>Previous post</span>
-                            <p>Protecting you from Phishing Limit</p>
-                        </a>
-
-                    </div>
-                    <div class="post-next">
-                        <img width="730" height="500"
-                             src="../../../../wp-content/uploads/sites/4/2020/04/image7.jpg"
-                             class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt=""
-                             decoding="async" loading="lazy"
-                             srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image7.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image7-300x205.jpg 300w"
-                             sizes="(max-width: 730px) 100vw, 730px" /> <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/12/everything-announced-at-google-summit/">
-                            <span>Next post </span>
-                            <p> Everything Announced at Google Summit</p>
-
-                        </a>
-
-                    </div>
-                </nav>
-
-                <div class="ts-related-post">
-
-                    <div class="section-heading heading-style3">
-                        <h3 class="mb-25">
-                            Related post
-                        </h3>
-                    </div>
-                    <div class="popular-grid-slider swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="item post-block-style post-333 post type-post status-publish format-standard has-post-thumbnail hentry category-technology">
-                                    <div class="post-thumb">
-                                        <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/14/connecting-people-with-technology/">
-                                            <img width="730" height="501"
-                                                 src="../../../../wp-content/uploads/sites/4/2020/04/image1.jpg"
-                                                 class="img-fluid wp-post-image" alt="" decoding="async"
-                                                 loading="lazy"
-                                                 srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image1.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image1-300x206.jpg 300w"
-                                                 sizes="(max-width: 730px) 100vw, 730px" />
-                                        </a>
-                                        <div class="grid-cat">
-
-
-
-                                            <a class="post-cat"
-                                               href="https://demo.themewinter.com/wp/digiqoles/personal-blog/category/technology/"
-                                               style="background-color:;color:#ffffff">
-
-                                                Technology
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3 class="post-title">
-                                            <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/14/connecting-people-with-technology/">
-                                                Connecting
-                                                people with Technology
-                                            </a>
-                                        </h3>
-                                        <span class="post-date-info">
-                                            <i class="ts-icon ts-icon-clock-regular"></i>
-                                            April 14, 2020
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="item post-block-style post-223 post type-post status-publish format-standard has-post-thumbnail hentry category-technology">
-                                    <div class="post-thumb">
-                                        <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/12/everything-announced-at-google-summit/">
-                                            <img width="730" height="500"
-                                                 src="../../../../wp-content/uploads/sites/4/2020/04/image7.jpg"
-                                                 class="img-fluid wp-post-image" alt="" decoding="async"
-                                                 loading="lazy"
-                                                 srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image7.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image7-300x205.jpg 300w"
-                                                 sizes="(max-width: 730px) 100vw, 730px" />
-                                        </a>
-                                        <div class="grid-cat">
-
-
-
-                                            <a class="post-cat"
-                                               href="https://demo.themewinter.com/wp/digiqoles/personal-blog/category/technology/"
-                                               style="background-color:;color:#ffffff">
-
-                                                Technology
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3 class="post-title">
-                                            <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/12/everything-announced-at-google-summit/">
-                                                Everything
-                                                Announced at Google Summit
-                                            </a>
-                                        </h3>
-                                        <span class="post-date-info">
-                                            <i class="ts-icon ts-icon-clock-regular"></i>
-                                            April 12, 2020
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="item post-block-style post-67 post type-post status-publish format-standard has-post-thumbnail hentry category-fashion">
-                                    <div class="post-thumb">
-                                        <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/08/protecting-you-from-phishing-limit/">
-                                            <img width="730" height="500"
-                                                 src="../../../../wp-content/uploads/sites/4/2020/04/image2.jpg"
-                                                 class="img-fluid wp-post-image" alt="" decoding="async"
-                                                 loading="lazy"
-                                                 srcset="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image2.jpg 730w, https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-content/uploads/sites/4/2020/04/image2-300x205.jpg 300w"
-                                                 sizes="(max-width: 730px) 100vw, 730px" />
-                                        </a>
-                                        <div class="grid-cat">
-
-
-
-                                            <a class="post-cat"
-                                               href="https://demo.themewinter.com/wp/digiqoles/personal-blog/category/fashion/"
-                                               style="background-color:;color:#ffffff">
-
-                                                Fashion
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                    <div class="post-content">
-                                        <h3 class="post-title">
-                                            <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/2020/04/08/protecting-you-from-phishing-limit/">
-                                                Protecting
-                                                you from Phishing Limit
-                                            </a>
-                                        </h3>
-                                        <span class="post-date-info">
-                                            <i class="ts-icon ts-icon-clock-regular"></i>
-                                            April 8, 2020
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          
+          
 
                 <div id="comments" class="blog-post-comment">
-
+                    @* Hiển thị các thông báo lỗi nếu có *@
+                    @if (ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > 0)
+                    {
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach (var error in ViewBag.ErrorMessages)
+                                {
+                                    <li>@error</li>
+                                }
+                            </ul>
+                        </div>
+                    }
 
                     <div id="respond" class="comment-respond">
                         <h3 id="reply-title" class="comment-reply-title">
@@ -444,8 +190,8 @@
                                    style="display:none;">Cancel reply</a>
                             </small>
                         </h3>
-                        <form action="https://demo.themewinter.com/wp/digiqoles/personal-blog/wp-comments-post.php"
-                              method="post" id="commentform" class="comment-form">
+                        <form action="/User/PostComment" 
+                              method="post"  class="comment-form">
                             <p class="comment-notes">
                                 <span id="email-notes">
                                     Your email address will not be
@@ -455,6 +201,7 @@
                                     marked <span class="required">*</span>
                                 </span>
                             </p>
+                            <input  value="@Model.TblPost.PostId" asp-for="TblComments.PostId" hidden/>
                             <div class="comment-info row">
                                @*  <div class="col-md-6">
                                     <input placeholder="Enter Name" id="author"
@@ -462,33 +209,32 @@
                                            aria-required='true' />
                                 </div> *@
                                 <div class="col-md-12">
-                                    <p> Your Name: 
-                                           </p>
+                                   
+                                        <p>
+                                        @UserManager.GetUserName(User)
+                                    </p>
+
+
+                                
+
                                 </div>
                               @*   <div class="col-md-12">
                                     <input placeholder="Enter Website" id="url" name="url"
                                            class="form-control" type="url" value="" size="30" />
                                 </div> *@
                             </div>
-                            <p class="comment-form-cookies-consent">
-                                <input id="wp-comment-cookies-consent"
-                                       name="wp-comment-cookies-consent" type="checkbox" value="yes" /> <label for="wp-comment-cookies-consent">
-                                    Save my name, email, and website in this
-                                    browser for the next time I comment.
-                                </label>
-                            </p>
+                           
 
                             <div class="row">
                                 <div class="col-md-12 ">
-                                    <textarea class="form-control msg-box" placeholder="Enter Comments" id="comment"
-                                              name="comment" cols="45" rows="8" aria-required="true"></textarea>
+                                    <textarea asp-for="TblComments.Description" class="form-control msg-box"></textarea>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
                             <p class="form-submit">
-                                <input name="submit" type="submit" id="submit"
-                                       class="btn-comments btn btn-primary" value="Post Comment" /> <input type='hidden' name='comment_post_ID' value='220' id='comment_post_ID' />
-                                <input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+                                <button  type="submit" 
+                                       class="btn-comments btn btn-primary">Nhận xét</button>
+                               
                             </p>
                         </form>
                     </div><!-- #respond -->
@@ -505,7 +251,7 @@
             <div class="col-lg-4 col-md-12">
                 <div id="sidebar" class="sidebar" role="complementary">
                     <div id="pu_media_upload-2" class="widget pu_media_upload">
-                        <div class="widgets author-box-widget ts-grid-box">
+                       @*  <div class="widgets author-box-widget ts-grid-box">
                             <div class="ts-post-thumb">
                                 <a href="https://demo.themewinter.com/wp/digiqoles/personal-blog/author/">
                                     <img class="img-fluid"
@@ -525,7 +271,7 @@
                                     The same systems we built to handle peaks like the Cyber Monday online.
                                 </p>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
                    @*  <div id="xs-social-2" class="widget digiqole-widget" color="white" !important>
                         <h3 class="widget-title"> <span class="title-angle-shap">Social</span></h3>
@@ -706,7 +452,7 @@
                            
                         </div>
                     </div>
-                    <div id="text-2" class="widget widget_text">
+                   @*  <div id="text-2" class="widget widget_text">
                         <h3 class="widget-title">
                             <span class="title-angle-shap">Subscribe to my Newsletter</span>
                         </h3>
@@ -734,8 +480,10 @@
                                     }
                                 }
                             })();
-                        </script><!-- Mailchimp for WordPress v4.9.4 - https://wordpress.org/plugins/mailchimp-for-wp/ -->
-                        <form id="mc4wp-form-1" class="mc4wp-form mc4wp-form-80" method="post" data-id="80"
+                        </script> *@
+                        
+                        <!-- Mailchimp for WordPress v4.9.4 - https://wordpress.org/plugins/mailchimp-for-wp/ -->
+                     @*    <form id="mc4wp-form-1" class="mc4wp-form mc4wp-form-80" method="post" data-id="80"
                               data-name="Subscription">
                             <div class="mc4wp-form-fields">
                                 <p class="personal-blog-cta">
@@ -752,9 +500,11 @@
                             </label><input type="hidden" name="_mc4wp_timestamp"
                                            value="1689603840" /><input type="hidden" name="_mc4wp_form_id" value="80" /><input type="hidden" name="_mc4wp_form_element_id" value="mc4wp-form-1" />
                             <div class="mc4wp-response"></div>
-                        </form><!-- / Mailchimp for WordPress Plugin -->
+                        </form> *@
+                        
+                        <!-- / Mailchimp for WordPress Plugin -->
                     </div>
-                    <div id="digiqole-category-list-2" class="widget digiqole-category-list">
+                  @*   <div id="digiqole-category-list-2" class="widget digiqole-category-list">
                         <div class="widgets_category ts-category-list-item">
                             <ul class="ts-category-list">
                                 <li>
@@ -783,7 +533,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div> *@
                     <div id="media_image-2" class="widget widget_media_image">
                         <a href="#">
                             <img width="330"
@@ -801,3 +551,22 @@
 
     </div> <!-- .container -->
 </div>
+
+
+@section scripts{
+    <script>
+        window.onscroll = function (ev) {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                // người dùng đã cuộn đến cuối trang, gọi API tại đây
+                var url = window.location.pathname;
+                var postId = url.substring(url.lastIndexOf('/') + 1);
+                console.log("hihi: ", postId);
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/Post/IncrementPostView?id=" + postId, true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.send();
+            }
+        };
+
+    </script>
+}

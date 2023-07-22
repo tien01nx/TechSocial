@@ -20,6 +20,6 @@ namespace TechSocial.Models
         public string? Description { get; set; }
 
         [ValidateNever]
-        public List<TblPost> TblPosts { get; set; }
+        public List<TblPost> ?TblPosts { get; set; }
     }
 }

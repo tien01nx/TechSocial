@@ -30,9 +30,7 @@ namespace TechSocial.Models
         [DisplayName("Lượt xem")]
         public int? PostsView { get; set; }
 
-        [DisplayName("Bình luận")]
-        public string? Comments { get; set; }
-
+      
         [DisplayName("Tài khoản")]
         public string? AccountId { get; set; }
         [ForeignKey("AccountId")]

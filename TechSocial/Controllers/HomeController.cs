@@ -37,6 +37,7 @@ namespace TechSocial.Controllers
                 AdnroidPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Android")).ToList(),
                 IosPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("iOS")).ToList(),
                 WindowsPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Windows")).ToList(),
+                MacOs = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("macOS")).ToList(),
                 PostNewest = _unitOfWork.Post.GetNewest()
             };
 
@@ -47,14 +48,20 @@ namespace TechSocial.Controllers
 
         public IActionResult Details(int id)
         {
+
             ListPost listPost = new ListPost()
             {
                 TblCategory = new TblCategory(),
 
                 TblPost = _unitOfWork.Post.Get(u => u.PostId == id, includeProperties: "Category,IdentityUser"),
+              
+                PostId =id,
+                PostNewest = _unitOfWork.Post.GetNewest(),
 
-                PostNewest = _unitOfWork.Post.GetNewest()
-            };
+                Comments = _unitOfWork.Comment.GetAll(u => u.PostId == id, includeProperties: "TblPost,IdentityUser").ToList(),
+
+        };
+
 
             //// includeProperties: "Category" lấy thuộc tính từ bảng khác, khóa ngoại, 
             //TblPost detail = _unitOfWork.Post.Get(u => u.PostId == id,includeProperties: "Category,IdentityUser");

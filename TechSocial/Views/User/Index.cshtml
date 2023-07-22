@@ -1,0 +1,100 @@
+﻿@model dynamic
+
+<link type="text/css" rel="stylesheet" href="./lib/css/style.css">
+<link href="./lib/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+<div class="py-4">
+    <div class="container">
+        <div class="row">
+
+
+            <main class="col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+
+                @foreach (var item in Model.ListPostUser)
+                {
+                    <div>
+                    <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">
+                        <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                            <div class="dropdown-list-image mr-3">
+                                <img class="rounded-circle" src="~/image/imageUser.jpg" alt="Avatar" height="60px" width="60px">
+                                <div class="status-indicator bg-success"></div>
+                            </div>
+                            <div class="font-weight-bold">
+                                <div class="text-truncate">@item.IdentityUser.UserName</div>
+                                <div class="small text-gray-500">Author</div>
+                            </div>
+                                <span class="ml-auto small">@item.CreatedAt</span>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-body">
+                                @{
+                                    IEnumerable<string> contentLines = !string.IsNullOrEmpty(item.Content)
+                                    ? item.Content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
+                                    : new List<string>();
+
+                                    var limitedContent = contentLines.Any() ? string.Join("\n", contentLines.Take(1)) : "";
+                                }
+
+
+                            <p class="description-limit">
+
+                                @Html.Raw(limitedContent)
+                            </p>
+                                <a href="/Home/Details/@item.PostId">Xem thêm</a>
+                        </div>
+                        <div class="p-3 border-bottom osahan-post-footer">
+                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-eye" aria-hidden="true"></i> 16</a>
+                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-comment-o" aria-hidden="true"></i>  8</a>
+
+                        </div>
+                        @*  <div class="p-3">
+                    <button type="button" class="btn btn-outline-primary btn-sm mr-1">Awesome!!</button>
+                    <button type="button" class="btn btn-light btn-sm mr-1">😍</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Whats it about?</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Oooo Great Wow</button>
+                    </div> *@
+                    </div>
+
+                    </div>
+                    }
+
+            </main>
+               
+            <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
+               
+
+                    <div class="box mb-3 shadow-sm border rounded bg-white profile-box text-center">
+                        <div class="py-4 px-3 border-bottom">
+                            <img src="~/image/imageUser.jpg" class="img-fluid mt-2 rounded-circle" alt="Avatar">
+                        <h5 class="font-weight-bold text-dark mb-1 mt-4">@Model.InfoUser.IdentityUser.UserName</h5>
+
+                        </div>
+                       @*  <div class="d-flex">
+                            <div class="col-6 border-right p-3">
+                                <h6 class="font-weight-bold text-dark mb-1">358</h6>
+                                <p class="mb-0 text-black-50 small">Connections</p>
+                            </div>
+                            <div class="col-6 p-3">
+                                <h6 class="font-weight-bold text-dark mb-1">85</h6>
+                                <p class="mb-0 text-black-50 small">Views</p>
+                            </div>
+                        </div> *@
+                        @* <div class="overflow-hidden border-top">
+                    <a class="font-weight-bold p-3 d-block" href="profile.html"> View my profile </a>
+                    </div> *@
+                    </div>
+
+
+                
+               
+            </aside>
+
+
+
+
+
+            
+        </div>
+    </div>
+</div>

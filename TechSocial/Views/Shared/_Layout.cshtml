@@ -1,9 +1,23 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model ListPost
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TechSocial</title>
+
+
+
+    @* <link rel="stylesheet" type="text/css" href="~/lib/css/flatpickr.min.css"> *@
+   @*  <link rel="stylesheet" type="text/css" href="~/lib/css/slick.css">
+    <link rel="stylesheet" type="text/css" href="~/lib/css/slick-theme.css"> *@
+  @*   <link rel="stylesheet" type="text/css" href="~/lib/css/style.css"> *@
+ @*    <link rel="stylesheet" type="text/css" href="~/lib/css/responsive.css"> *@
+
+
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
@@ -23,6 +37,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/js/swiper.min48f5.js"></script>
 
+    <script src="~/lib/js/bootstrap.bundle.min.js"></script>
 
     <script type='text/javascript' id='csf-google-web-fonts-js-extra'>
         /* <![CDATA[ */
@@ -32,7 +47,9 @@
     <script type='text/javascript' src='~/lib/js/webfont.js' id='csf-google-web-fonts-js'></script>
 </head>
 <body>
+
     <header>
+        <div id="head"></div>
         <div class="ekit-template-content-markup ekit-template-content-header ekit-template-content-theme-support">
             <div data-elementor-type="wp-post" data-elementor-id="8" class="elementor elementor-8">
                 <div class="elementor-inner">
@@ -92,6 +109,16 @@
                                                                             Android
                                                                         </a>
                                                                     </li>
+                                                                    <li id="menu-item-594" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-594 nav-item elementskit-mobile-builder-content" data-vertical-menu=750px>
+                                                                        <a asp-action="Index" asp-controller="Post" asp-route-CategoryName="iOS" class="ekit-menu-nav-link category-link">
+                                                                            iOS
+                                                                        </a>
+                                                                    </li>
+                                                                    <li id="menu-item-594" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-594 nav-item elementskit-mobile-builder-content" data-vertical-menu=750px>
+                                                                        <a asp-action="Index" asp-controller="Post" asp-route-CategoryName="macOS" class="ekit-menu-nav-link category-link">
+                                                                            macOS
+                                                                        </a>
+                                                                    </li>
 
                                                                     <li id="menu-item-594" data-vertical-menu=750px>
 
@@ -145,31 +172,69 @@
                                             justify-content: center;
                                             align-items: center;
                                             padding-bottom: 18px;
+                                            margin-top: -20px;
+                                            font-family: 'Roboto';
+                                            font-size: 14px;
+                                            text-transform: uppercase;
+
                                         }
                                     </style>
+                                   
                                     <ul class="nav navbar-nav navbar-right hii">
-                                        <li class="navbar-right__item">
-                                            <a class="btn btn-outline-primary" id="login" asp-area="Identity" asp-page="/Account/Login">
-                                                Đăng nhập
-                                            </a>
-                                        </li>
-                                        <li class="navbar-right__item">
-                                            <a class="btn btn-primary" id="register" asp-area="Identity" asp-page="/Account/Register">
-                                                Đăng ký
-                                            </a>
-                                        </li>
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
 
-                                        <li class="navbar-right__item">
-                                            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-                                            </form>
-                                        </li>
+                                            <li class="navbar-right__item">
+                                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                    <button id="logout" type="submit" >Logout</button>
+                                                </form>
+                                            </li>
 
-                                        <li class="navbar-right__item">
-                                            <a class="btn btn-primary" id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">
-                                               Admin
-                                            </a>
-                                        </li>
+                                            <li class="navbar-right__item">
+                                                <a id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                                                    Admin
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button"  data-toggle="dropdown" >
+                                                        Dropdown
+                                                    </button>
+                                                    <div class="dropdown-menu" >
+                                                        <button class="dropdown-item" type="button">Profile
+                                                           @*  <a asp-action="Index" asp-controller="User" asp-route-Id="@Model.TblPost.IdentityUser.Id"> </a> *@
+                                                        </button>
+                                                        <button class="dropdown-item" type="button">
+                                                           
+                                                            Manager</button>
+                                                        <button class="dropdown-item" type="button">
+                                                            <a asp-controller="Home" asp-action="Index">LogOut</a>
+               
+                                                            </button>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                           
+
+
+                                        }
+                                        else
+                                        {
+                                            <li class="navbar-right__item">
+                                                <a id="login" asp-area="Identity" asp-page="/Account/Login">
+                                                    Đăng nhập
+                                                </a>
+                                            </li>
+                                            <li class="navbar-right__item">
+                                                <a id="register" asp-area="Identity" asp-page="/Account/Register">
+                                                    Đăng ký
+                                                </a>
+                                            </li>
+
+                                        }
+
+                                         
+                                      
                                     </ul>
                                 </div>
                             </div>
@@ -178,6 +243,7 @@
                 </div>
             </div>
         </div>
+       
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -190,6 +256,7 @@
             <div data-elementor-type="wp-post" data-elementor-id="155" class="elementor elementor-155">
                 <div class="elementor-inner">
                     <div class="elementor-section-wrap">
+                       
                         <section class="elementor-section elementor-top-section elementor-element elementor-element-2757115 elementor-section-boxed elementor-section-height-default elementor-section-height-default"
                                  data-id="2757115" data-element_type="section"
                                  data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
@@ -204,7 +271,7 @@
                                                      data-widget_type="digiqole-logo.default">
                                                     <div class="elementor-widget-container">
                                                         <div class="digiqole-widget-logo">
-                                                            <a asp-action="Index" asp-controller="Home" class="logo">
+                                                            <a href="#head" class="logo">
                                                                 <img src="~/image/icon/Logo_DiuThanh_white_OK.png"
                                                                      alt="Personal Blog">
                                                             </a>
@@ -251,6 +318,7 @@
                                 </div>
                             </div>
                         </section>
+                       
                     </div>
                 </div>
             </div>
@@ -259,9 +327,10 @@
     
 
    
-    @* <script src="~/js/search.js"></script> *@
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/search.js"></script>
+
     <script src="https://cdn.tiny.cloud/1/go2gbbh0374j92i5q8hajkjsq1odkk8u6lvre7w2yoeislth/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script type='text/javascript' id='digiqole-script-js-extra'>
         /* <![CDATA[ */

@@ -4,21 +4,57 @@
     ViewData["Title"] = "Index";
 }
 
+
+
+
+
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Thêm mới một danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" onclick="resetText()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Tên danh mục <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="CategoryName" placeholder="Nhập tên danh mục" style="margin-bottom: 5px;" />
+                    <span id="checkName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Thứ tự hiện thị <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Description" placeholder="Nhập thứ tự hiện thị" style="margin-bottom: 5px;" />
+                    <span id="checkDisplay" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetText()">Đóng</button>
+                <button type="button" class="btn btn-primary" id="save" onclick="saveIndustry()">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="col-md-12">
     <div class="tile">
         <div class="tile-body">
             <div class="row element-button">
                 <div class="col-sm-2">
-                    <a class="btn btn-add btn-sm"   asp-action="Create"  title="Thêm">
+                    <button class="btn btn-add btn-sm" type="button" title="Thêm" data-bs-toggle="modal" data-bs-target="#myModal" onclick="showModal()">
                         <i class="fas fa-plus"></i>
                     Tạo Category
-                    </a>
+                    </button>
                 </div>
             </div>
-            <table class="table table-hover table-bordered" id="sampleTable">
+            <table class="table table-hover table-bordered" id="TblCategory">
                 <thead>
                     <tr>
-                        <th width="10"><input type="checkbox" id="all"></th>
+                        <th>STT</th>
                        
                         <th>Tên</th>
                         <th>Mô tả</th>
@@ -26,26 +62,44 @@
                     </tr>
                 </thead>
                 <tbody>
+
+
+                    @{
+                        int STT = 1;
+                    }
+
                     @foreach (var item in Model) {
-                    <tr>
-                        <td width="10"><input type="checkbox" name="check1" value="1"></td>
-                            <td>    @Html.DisplayFor(modelItem => item.CategoryName)</td>
-                            <td>  @Html.DisplayFor(modelItem => item.Description)</td>
-                        
-                        <td>
-                                <a class="btn btn-primary btn-sm trash" title="Xóa" asp-action="Delete" asp-route-id="@item.CategoryId">
-                                 
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                                <a class="btn btn-primary btn-sm edit" asp-action="Edit" asp-route-id="@item.CategoryId" title="Sửa" 
-                                    data-target="#ModalUP">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                        </td>
-                    </tr>
+                        <tr id="category-@item.CategoryId">
+                            <td>@STT</td>
+
+                            <td id="category-name-@item.CategoryId">@item.CategoryName</td>
+                            <td id="display-order-@item.CategoryId">@item.Description</td>
+
+                            <td class="table-action">
+                                <a class="btn btn-primary btn-sm edit"  onclick="populateModalWithIndustryDetails(@item.CategoryId)">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-primary btn-sm trash" title="Xóa" onclick="deleteIndustry(@item.CategoryId)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                        STT++;
                     }
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/category.js"></script>
+    <script>
+        document.getElementById("CategoryName").addEventListener("keyup", function (event) {
+            if (event.keyCode === 13) {
+                createIndustry();
+            }
+        });</script>
+}
+

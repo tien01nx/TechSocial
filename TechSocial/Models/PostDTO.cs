@@ -1,4 +1,6 @@
-﻿namespace TechSocial.Models
+﻿using System.Collections;
+
+namespace TechSocial.Models
 {
     public class PostDTO
     {
@@ -9,5 +11,7 @@
         public string CategoryName { get; set; }
 
         public DateTime? Created { get; set; }
+
+
     }
 }

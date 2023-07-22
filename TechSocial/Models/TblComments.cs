@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TechSocial.Models
 {
     public class TblComments
     {
         [Key]
-        public int Comments { get; set; }
+        public int ID { get; set; }
 
         [DisplayName("Content")]
         public string? Description { get; set; }
@@ -24,11 +24,10 @@ namespace TechSocial.Models
         public IdentityUser? IdentityUser { get; set; }
 
 
-        public int PostId { get; set; } 
+        public int PostId { get; set; }
         [ForeignKey("PostId")]
         [ValidateNever]
-        public TblPost TblPost { get; set; }
-
+        public TblPost ?TblPost { get; set; }
 
     }
 }

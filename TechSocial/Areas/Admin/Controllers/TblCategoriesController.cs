@@ -56,7 +56,7 @@ namespace TechSocial.Areas.Admin.Controllers
        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( TblCategory tblCategory)
+        public async Task<IActionResult> Create( [FromBody] TblCategory tblCategory)
         {
             if (ModelState.IsValid)
             {
@@ -65,31 +65,31 @@ namespace TechSocial.Areas.Admin.Controllers
                 {
                    _unitOfWork.Category.Add(tblCategory);
                     _unitOfWork.Save();
-                    return RedirectToAction(nameof(Index));
+                    return Ok(tblCategory);
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
-            return View(tblCategory);
+            return BadRequest(tblCategory);
         }
 
         // GET: Admin/TblCategories/Edit/5
-        public IActionResult Edit(int? id)
+        public IActionResult Edit([FromBody] int? id)
         {
 
 
             if (id == null)
             {
-                NotFound();
+                BadRequest();
             }
             var tblCategory =  _unitOfWork.Category.Get(u=>u.CategoryId == id);
             if (tblCategory == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-            return View(tblCategory);
+            return Ok(tblCategory);
         }
 
         // POST: Admin/TblCategories/Edit/5

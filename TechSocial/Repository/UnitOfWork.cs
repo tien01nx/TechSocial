@@ -25,6 +25,7 @@ namespace TechSocial.Repository
             Category = new CategoryRepository(_db);
             Account = new AccountRepository(_db);
            Rating = new RatingRepository(_db);
+            Comment = new CommentRepository(_db);
           
         }
 

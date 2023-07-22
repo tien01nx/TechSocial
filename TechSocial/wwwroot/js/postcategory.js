@@ -28,14 +28,14 @@ function renderData(data) {
                                  class="post-layout col-md-6 post-223 post type-post status-publish format-standard has-post-thumbnail hentry category-technology">
                             <div class="post-block-style small-post text-center">
                                 <div class="post-thumb">
-                                    <a href="../../2020/04/12/everything-announced-at-google-summit/index.html">
+                                    <a href="/Home/Details/${product.id}">
                                         <img class="img-fluid"
                                              src=" ${product.image}"
                                              alt=" Everything Announced at Google Summit">
                                     </a>
                                 </div>
                                 <div class="grid-cat">
-                                    <a class="post-cat" href="index.html" style="color:#ffffff ">
+                                    <a class="post-cat" href="/Home/Details/${product.id}">
                                         <span class="before"
                                               style="color:#ffffff "></span> ${product.categoryName}<span class="after" style="color:#ffffff"></span>
                                     </a>
@@ -43,18 +43,16 @@ function renderData(data) {
                                 <div class="post-content text-center">
                                     <div class="entry-blog-header">
                                         <h3 class="post-title md">
-                                            <a href="../../2020/04/12/everything-announced-at-google-summit/index.html">
+                                            <a href="/Home/Details/${product.id}">
                                                 ${product.title}
                                             </a>
                                         </h3>
                                     </div>
                                     <div class="post-meta">
                                         <div class="post-meta">
-                                            <span class="post-author">
-                                                <i class="ts-icon ts-icon-user-solid"></i> <a href="../../author/digiQoles/index.html">digiQoles</a>
-                                            </span><span class="post-meta-date">
-                                                <i class="ts-icon ts-icon-clock-regular"></i>
-                                                ${product.created}
+                                           <span class="post-meta-date">
+                                                <i class="fa fa-clock-o" aria-hidden="true"></i> 
+                                                    ${product.created}
                                             </span>
                                         </div>
                                     </div>

@@ -13,22 +13,27 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using TechSocial.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize]
     public class TblPostsController : Controller
     {
      
        
         private readonly IUnitOfWork _unitOfWork;
 
+        private readonly SignInManager<IdentityUser> _signInManager;
+
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public TblPostsController( IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork,UserManager<IdentityUser> userManager)
+        public TblPostsController( IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork,UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
          
+            _signInManager = signInManager;
             _webHostEnvironment = webHostEnvironment;
             _unitOfWork = unitOfWork;
             _userManager = userManager;
@@ -45,7 +50,19 @@ namespace TechSocial.Areas.Admin.Controllers
             //var users = _repository.GetAccounts();
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
             ViewData["UserName"] = new SelectList(users, "id", "UserName");
-            return View(_unitOfWork.Post.GetAll());
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            IEnumerable<TblPost> obj;
+            if (User.IsInRole("Admin"))
+            {
+                obj = _unitOfWork.Post.GetAll().ToList();
+            }
+            else
+            {
+                obj = _unitOfWork.Post.GetAll(u => u.AccountId.Equals(userId)).ToList();
+
+            }
+            return View(obj);
         }
 
         // GET: Admin/TblPosts/Details/5
