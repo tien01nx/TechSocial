@@ -11,7 +11,7 @@
         <div class="tile-body">
             <div class="row element-button">
                 <div class="col-sm-2">
-                    <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm">
+                    <a class="btn btn-add btn-sm mb-3" asp-action="Create" title="Thêm">
                         <i class="fas fa-plus"></i>
                         Tạo Bài Viết
                     </a>
@@ -23,29 +23,29 @@
                         <th width="10"><input type="checkbox" id="all"></th>
 
                         <th>
-                          Tiêu đề
+                            Tiêu đề
                         </th>
                         <th>
                             Ngày viết
                         </th>
-                       
-                       @*  <th>
-                            Nội dung
+
+                        @*  <th>
+                        Nội dung
                         </th> *@
                         <th>
                             Ảnh minh họa
                         </th>
-                      @*   <th>
-                            Lượt xem 
+                        @*   <th>
+                        Lượt xem
                         </th>
                         <th>
-                            Bình luận
+                        Bình luận
                         </th> *@
                         <th>
-                            Tác giả 
+                            Tác giả
                         </th>
                         <th>
-                           Danh mục
+                            Danh mục
                         </th>
                         <th></th>
                     </tr>
@@ -65,11 +65,11 @@
                             </td>
 
                             @* <td>
-                                <p class="description-limit">@Html.Raw(item.Content)</p>
-                            </td>
-                            <td>
-                                <p class="description-limit">@Html.DisplayFor(modelItem => item.Content)</p>
-                            </td> *@
+                        <p class="description-limit">@Html.Raw(item.Content)</p>
+                        </td>
+                        <td>
+                        <p class="description-limit">@Html.DisplayFor(modelItem => item.Content)</p>
+                        </td> *@
                             <td>
 
                                 <img width="100" height="160"
@@ -77,14 +77,14 @@
 
                             </td>
                             @* <td>
-                                @Html.DisplayFor(modelItem => item.PostsView)
-                            </td>
+                        @Html.DisplayFor(modelItem => item.PostsView)
+                        </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Comments)
+                        </td> *@
                             <td>
-                                @Html.DisplayFor(modelItem => item.Comments)
-                            </td> *@
-                           <td>
                                 @Html.DisplayFor(modelItem => item.IdentityUser.UserName)
-                           </td>
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
                             </td>
@@ -105,4 +105,3 @@
         </div>
     </div>
 </div>
-
