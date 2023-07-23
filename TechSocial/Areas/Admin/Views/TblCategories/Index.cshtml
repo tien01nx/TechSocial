@@ -9,6 +9,63 @@
 
 
 
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Quản lý danh mục</h1>
+    </div>
+
+    <div class="mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="showModal()">
+            <i class="align-middle" data-feather="plus"></i> Thêm mới
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-xl-12">
+
+            <div class="card">
+                <table class="table table-striped" id="tblCategory">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên danh mục</th>
+                            <th>Mô tả</th>
+                            <th nowrap>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int STT = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr id="category-@item.CategoryId">
+                                <td>@STT</td>
+
+                                <td id="category-name-@item.CategoryId">@item.CategoryName</td>
+                                <td id="display-order-@item.CategoryId">@item.Description</td>
+
+                                <td class="table-action">
+                                    <a href="#" onclick="populateModalWithIndustryDetails(@item.CategoryId)">
+                                        <i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i>
+                                    </a>
+                                    <a onclick="deleteIndustry(@item.CategoryId)">
+                                        <i class="fal fa-trash" style="color: #000000;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            STT++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -25,8 +82,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="control-label">Thứ tự hiện thị <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="Description" placeholder="Nhập thứ tự hiện thị" style="margin-bottom: 5px;" />
+                    <label class="control-label">Mô tả<span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Description" placeholder="Nhập mô tả danh mục" style="margin-bottom: 5px;" />
                     <span id="checkDisplay" class="text-danger"></span>
                 </div>
             </div>
@@ -40,7 +97,7 @@
 
 
 
-<div class="col-md-12">
+@* <div class="col-md-12">
     <div class="tile">
         <div class="tile-body">
             <div class="row element-button">
@@ -51,7 +108,7 @@
                     </button>
                 </div>
             </div>
-            <table class="table table-hover table-bordered" id="TblCategory">
+            <table class="table table-hover table-bordered" id="tblCategory">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -91,10 +148,10 @@
             </table>
         </div>
     </div>
-</div>
+</div> *@
 
 @section Scripts{
-    <script src="~/js/category.js"></script>
+    <script src="~/js/Category.js"></script>
     <script>
         document.getElementById("CategoryName").addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {

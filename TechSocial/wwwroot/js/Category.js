@@ -84,32 +84,7 @@ function createIndustry() {
     var CategoryName = document.getElementById("CategoryName");
     var Description = document.getElementById("Description");
     var checkName = document.getElementById("checkName");
-    var checkDisplay = document.getElementById("checkDisplay");
-    var alertMsg = document.getElementById("alert");
-
-    if (CategoryName.value == "") {
-        checkName.innerHTML = "Vui lòng nhập tên danh mục!";
-        CategoryName.focus();
-        return;
-    } else {
-        checkName.innerHTML = ""; // Xóa thông báo lỗi
-    }
-
-    if (Description.value == "") {
-        checkDisplay.innerHTML = "Vui lòng nhập thứ tự danh mục!";
-        Description.focus();
-        return;
-    } else {
-        checkDisplay.innerHTML = ""; // Xóa thông báo lỗi
-        var Description = parseInt(Description.value);
-        if (isNaN(Description) || Description < 0 || Description > 100) {
-            checkDisplay.innerHTML = "Thứ tự danh mục phải là một số trong khoảng từ 0 đến 100!";
-            Description.focus();
-            return;
-        } else {
-            Description.innerHTML = ""; // Xóa thông báo lỗi
-        }
-    }
+   
 
     var industryData = {
         CategoryName: CategoryName.value,
@@ -129,7 +104,7 @@ function createIndustry() {
             }
 
             resetText();
-            addRowToTable(res.id, res.name, res.description);
+            addRowToTable(res.categoryId, res.categoryName, res.description);
             document.getElementById("btn-close").click();
         }
         
@@ -195,13 +170,16 @@ function addRowToTable(id, name, displayorder) {
     cell4.className = "table-action";
     //cell4.innerHTML = `<a href="#"><i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i></a>
     //    <a onclick="deleteIndustry(` + id + `)"><i class="fal fa-trash" style="color: #000000;"></i></a>`;
-    cell4.innerHTML = `<a href="#" onclick="populateModalWithIndustryDetails(` + id + `)"><i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i></a>
-        <a onclick="deleteIndustry(` + id + `)"><i class="fal fa-trash" style="color: #000000;"></i></a>`;
+    cell4.innerHTML = `
+
+    <a href="#" onclick="populateModalWithIndustryDetails(` + id + `)"><i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i></a>
+        <a onclick="deleteIndustry(` + id + `)"><i class="fal fa-trash" style="color: #000000;"></i></a>
+        `;
 }
 
 function resetText() {
     document.getElementById("CategoryName").value = "";
-    document.getElementById("DisplayOrder").value = "";
+    document.getElementById("Description").value = "";
     document.getElementById("checkName").innerHTML = "";
     document.getElementById("checkDisplay").innerHTML = "";
 

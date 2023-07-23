@@ -29,6 +29,8 @@ namespace TechSocial.Areas.Admin.Controllers
             return View(_unitOfWork.Category.GetAll());
         }
 
+
+
         // GET: Admin/TblCategories/Details/5
         public  IActionResult Details(int? id)
         {
@@ -45,6 +47,8 @@ namespace TechSocial.Areas.Admin.Controllers
             return View(tblCategory);
         }
 
+
+
         // GET: Admin/TblCategories/Create
         public IActionResult Create()
         {
@@ -55,7 +59,7 @@ namespace TechSocial.Areas.Admin.Controllers
         // POST: Admin/TblCategories/Create
        
         [HttpPost]
-        [ValidateAntiForgeryToken]
+       
         public async Task<IActionResult> Create( [FromBody] TblCategory tblCategory)
         {
             if (ModelState.IsValid)
@@ -76,7 +80,10 @@ namespace TechSocial.Areas.Admin.Controllers
         }
 
         // GET: Admin/TblCategories/Edit/5
-        public IActionResult Edit([FromBody] int? id)
+
+
+
+        public IActionResult Edit( int? id)
         {
 
 
@@ -89,24 +96,22 @@ namespace TechSocial.Areas.Admin.Controllers
             {
                 return BadRequest();
             }
-            return Ok(tblCategory);
+            return Json(tblCategory);
         }
 
-        // POST: Admin/TblCategories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, TblCategory tblCategory)
+       
+        public  IActionResult Edit([FromBody] TblCategory tblCategory)
         {
             if (ModelState.IsValid)
             {
                 _unitOfWork.Category.Update(tblCategory);
                 _unitOfWork.Save();
-                return RedirectToAction(nameof(Index));
+                return Ok(tblCategory);
                 //return View("Index");
             }
-            return View(tblCategory);
+            return BadRequest(tblCategory);
         }
 
         // GET: Admin/TblCategories/Delete/5
@@ -128,7 +133,7 @@ namespace TechSocial.Areas.Admin.Controllers
 
         // POST: Admin/TblCategories/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+ 
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tblCategory =  _unitOfWork.Category.Get(u=>u.CategoryId==id);
