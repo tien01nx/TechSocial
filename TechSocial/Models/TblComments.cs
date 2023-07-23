@@ -9,22 +9,24 @@ namespace TechSocial.Models
     public class TblComments
     {
         [Key]
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("Content")]
         public string? Description { get; set; }
 
         [DisplayName("Time")]
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
+        [NotMapped]
+        public string? user { get; set; }
 
-        public string AccountId { get; set; }
+        public string? AccountId { get; set; }
         [ForeignKey("AccountId")]
         [ValidateNever]
         public IdentityUser? IdentityUser { get; set; }
 
 
-        public int PostId { get; set; }
+        public int? PostId { get; set; }
         [ForeignKey("PostId")]
         [ValidateNever]
         public TblPost ?TblPost { get; set; }

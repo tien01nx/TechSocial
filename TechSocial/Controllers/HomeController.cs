@@ -49,25 +49,11 @@ namespace TechSocial.Controllers
         public IActionResult Details(int id)
         {
 
-            ListPost listPost = new ListPost()
-            {
-                TblCategory = new TblCategory(),
-
-                TblPost = _unitOfWork.Post.Get(u => u.PostId == id, includeProperties: "Category,IdentityUser"),
-              
-                PostId =id,
-                PostNewest = _unitOfWork.Post.GetNewest(),
-
-                Comments = _unitOfWork.Comment.GetAll(u => u.PostId == id, includeProperties: "TblPost,IdentityUser").ToList(),
-
-        };
-
-
-            //// includeProperties: "Category" lấy thuộc tính từ bảng khác, khóa ngoại, 
-            //TblPost detail = _unitOfWork.Post.Get(u => u.PostId == id,includeProperties: "Category,IdentityUser");
-
-
-            return View(listPost);
+            ViewBag.TblPost = _unitOfWork.Post.Get(u => u.PostId == id, includeProperties: "Category,IdentityUser");
+            ViewBag.PostNewest = _unitOfWork.Post.GetNewest();
+            ViewBag.Comments = _unitOfWork.Comment.GetAll(u => u.PostId == id, includeProperties: "TblPost,IdentityUser").ToList();
+            TblComments tblComments= new TblComments();
+            return View(tblComments);
         }
         public IActionResult Privacy()
         {
@@ -97,7 +83,7 @@ namespace TechSocial.Controllers
                 Id = p.PostId,
                 Title = p.Title,
                 UserName = p.IdentityUser.UserName,
-                Image= p.ImgSrc,
+                Image = p.ImgSrc,
                 CategoryName = p.Category.CategoryName,
                 Created = p.CreatedAt
 

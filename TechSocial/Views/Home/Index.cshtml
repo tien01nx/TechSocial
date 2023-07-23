@@ -316,7 +316,7 @@
                                         <div class="elementor-widget-container">
                                             <div class="recent-posts-widget post-list-item">
                                                 <div class="post-tab-list">
-                                                    @foreach (var item in Model.PostNewest.OrderByDescending(u=>u.CreatedAt))
+                                                    @foreach (var item in Model.PostNewest)
                                                     {
                                                         <div class="post-content media">
                                                             <div class="post-thumb">

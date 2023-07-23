@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Security.Claims;
 using TechSocial.Models;
@@ -7,6 +8,7 @@ using TechSocial.Repository.IRepository;
 
 namespace TechSocial.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
 		private readonly IUnitOfWork _unitOfWork;
@@ -28,24 +30,25 @@ namespace TechSocial.Controllers
         }
 
         [HttpPost]
-        public IActionResult PostComment(ListPost comments)
+        public IActionResult PostComment(TblComments tblComments)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            comments.TblComments.AccountId = userId;
-           comments.TblComments.DateCreated= DateTime.Now;
+            tblComments.AccountId = userId;
+
+           tblComments.DateCreated= DateTime.Now;
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Comment.Add(comments.TblComments);
+                _unitOfWork.Comment.Add(tblComments);
                 _unitOfWork.Save();
-                return RedirectToAction(nameof(HomeController.Details), "Home", new { id = comments.TblComments.PostId });
+                return RedirectToAction(nameof(HomeController.Details), "Home", new { id = tblComments.PostId });
             }
             else
             {
                 ViewBag.ErrorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
             }
-            return View(comments);
+            return View(tblComments);
         }
     }
 }

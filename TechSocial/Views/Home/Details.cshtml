@@ -1,6 +1,9 @@
-﻿@using Microsoft.AspNetCore.Identity;
-@model ListPost
+﻿
+@model TblComments
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
 
+@inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @{
     ViewData["Title"] = "Details";
@@ -16,9 +19,9 @@
                 </li>
                 <li >
                     <a asp-action="Index" asp-controller="Home" >
-                    @if (Model.TblPost != null)
+                    @if (ViewBag.TblPost != null)
                     {
-                    <a asp-action="Index" asp-controller="Home" >@Model.TblPost.Category.CategoryName</a>
+                    <a asp-action="Index" asp-controller="Home" >@ViewBag.TblPost.Category.CategoryName</a>
                        
                     }
                     </a>
@@ -27,9 +30,9 @@
                   
                     <i class="fa fa-arrow-right" aria-hidden="true"></i>
 
-                    @if (Model.TblPost != null)
+                    @if (ViewBag.TblPost != null)
                     {
-                        @Model.TblPost.Title
+                        @ViewBag.TblPost.Title
 
                     }
                    
@@ -54,9 +57,9 @@
                     <!-- Article header -->
                     <header class="entry-header clearfix">
                         <h1  class="post-title lg">
-                            @if (Model.TblPost != null)
+                            @if (ViewBag.TblPost != null)
                             {
-                                @Model.TblPost.Title
+                                @ViewBag.TblPost.Title
 
                             }
                         </h1>
@@ -67,9 +70,9 @@
                                    style=" background-color:;color:#ffffff ">
                                     <span class="before" style="background-color:;color:#ffffff "></span>
 
-                                    @if (Model.TblPost != null)
+                                    @if (ViewBag.TblPost != null)
                                     {
-                                        @Model.TblPost.Category.CategoryName
+                                        @ViewBag.TblPost.Category.CategoryName
 
 
                                     }
@@ -82,10 +85,10 @@
                                     src="~/image/imageUser.jpg"
                                      class='avatar avatar-55 photo' height='55' width='55' loading='lazy'
                                      decoding='async' />
-                                     <a asp-action="Index" asp-controller="User" asp-route-Id="@Model.TblPost.IdentityUser.Id">
-                                    @if (Model.TblPost != null)
+                                     <a asp-action="Index" asp-controller="User" asp-route-Id="@ViewBag.TblPost.IdentityUser.Id">
+                                    @if (ViewBag.TblPost != null)
                                     {
-                                        @(Model.TblPost.IdentityUser != null && Model.TblPost.IdentityUser.UserName != null ? Model.TblPost.IdentityUser.UserName : "Dịu Thanh")
+                                        @(ViewBag.TblPost.IdentityUser != null && ViewBag.TblPost.IdentityUser.UserName != null ? ViewBag.TblPost.IdentityUser.UserName : "Dịu Thanh")
                                     }
                                          
                                      </a>
@@ -94,9 +97,9 @@
                                 <i class="ts-icon ts-icon-clock-regular"></i>
 
 
-                                @if (Model.TblPost != null)
+                                @if (ViewBag.TblPost != null)
                                 {
-                                    @Model.TblPost.CreatedAt
+                                    @ViewBag.TblPost.CreatedAt
 
                                 }
                               
@@ -104,7 +107,7 @@
                           
                             <li class="meta-post-view">
                                 <i class="fa fa-eye" aria-hidden="true"></i>
-                                @Model.TblPost.PostsView
+                                @ViewBag.TblPost.PostsView
                             </li>
                          
                         </ul>
@@ -112,9 +115,9 @@
 
 
                     <div class="post-media post-image">
-                        @if (Model.TblPost != null)
+                        @if (ViewBag.TblPost != null)
                         {
-                            <img class="img-fluid" src="@Model.TblPost.ImgSrc"/>
+                            <img class="img-fluid" src="@ViewBag.TblPost.ImgSrc"/>
 
                         }
                        
@@ -129,9 +132,9 @@
                           
                             <p class="content">
 
-                                @if (Model.TblPost != null)
+                                @if (ViewBag.TblPost != null)
                                 {
-                                    @Html.Raw(Model.TblPost.Content)
+                                    @Html.Raw(ViewBag.TblPost.Content)
 
                                 }
 
@@ -156,7 +159,7 @@
                              class='avatar avatar-96 photo' height='96' width='96' loading='lazy' decoding='async' />
                     </div>
                     <div class="author-info">
-                        <h3>@Model.TblPost.IdentityUser.UserName</h3>
+                        <h3>@ViewBag.TblPost.IdentityUser.UserName</h3>
                         <p class="author-url">
                            Author
                         </p>
@@ -165,8 +168,6 @@
                     </div>
                 </div> <!-- Author box end -->
 
-          
-          
 
                 <div id="comments" class="blog-post-comment">
                     @* Hiển thị các thông báo lỗi nếu có *@
@@ -190,8 +191,10 @@
                                    style="display:none;">Cancel reply</a>
                             </small>
                         </h3>
-                        <form action="/User/PostComment" 
-                              method="post"  class="comment-form">
+
+                        <form asp-action="PostComment" asp-controller="User"
+                             class="comment-form">
+
                             <p class="comment-notes">
                                 <span id="email-notes">
                                     Your email address will not be
@@ -201,33 +204,46 @@
                                     marked <span class="required">*</span>
                                 </span>
                             </p>
-                            <input  value="@Model.TblPost.PostId" asp-for="TblComments.PostId" hidden/>
+                            <input  value="@ViewBag.TblPost.PostId" asp-for="PostId" hidden/>
+
+                            @{
+                                string userId = null;
+                                if (SignInManager.IsSignedIn(User))
+                                {
+                                    var claimsIdentity = (ClaimsIdentity)User.Identity;
+                                    userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                                }
+                            }
+                            @foreach (var item in ViewBag.Comments)
+                            {
+                                <div>
+
+                                    <h4>@item.IdentityUser</h4>  <span>@item.DateCreated</span>
+                               
+                                    <p> @item.Description </p>
+                                    @if (item.AccountId.Equals(userId))
+                                    {
+                                        <p> Edit</p>
+                                    }
+                                </div>
+                            }
+
                             <div class="comment-info row">
-                               @*  <div class="col-md-6">
-                                    <input placeholder="Enter Name" id="author"
-                                           class="form-control" name="author" type="text" value="" size="30"
-                                           aria-required='true' />
-                                </div> *@
+                             
                                 <div class="col-md-12">
                                    
-                                        <p>
+                                        <p> Your Name: 
                                         @UserManager.GetUserName(User)
                                     </p>
 
-
-                                
-
                                 </div>
-                              @*   <div class="col-md-12">
-                                    <input placeholder="Enter Website" id="url" name="url"
-                                           class="form-control" type="url" value="" size="30" />
-                                </div> *@
+                             
                             </div>
-                           
+                         
 
                             <div class="row">
                                 <div class="col-md-12 ">
-                                    <textarea asp-for="TblComments.Description" class="form-control msg-box"></textarea>
+                                    <textarea asp-for="Description" class="form-control msg-box"></textarea>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -300,19 +316,18 @@
                            
 
                             <div class="post-tab-list">
-                                @foreach (var item in Model.PostNewest.OrderByDescending(u => u.CreatedAt))
+                                @foreach (var item in ViewBag.PostNewest)
                                 {
                                 <div class="post-content media">
                                     <div class="post-thumb">
                                              <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                            rel="bookmark">
 
-                                                @if (Model.TblPost != null)
-                                                {
+                                                
                                                     <img class="digiqole-sm-bg-img"
                                                         src="@item.ImgSrc"/>
                                                     
-                                                }
+                                               
                                           
 
                                         </a>
@@ -332,11 +347,10 @@
                                                 <a asp-action="Details" asp-controller="Home" asp-route-id="@item.PostId"
                                                rel="bookmark" >
 
-                                                    @if (Model.TblPost != null)
-                                                    {
+                                                   
                                                         @item.Title
 
-                                                    }
+                                                    
                                               
 
                                             </a>
@@ -344,10 +358,9 @@
                                         <span class="post-date">
                                             <i class="ts-icon ts-icon-clock-regular"
                                                aria-hidden="true"></i>
-                                                @if (Model.TblPost != null)
-                                                {
+                                             
                                                     @item.CreatedAt
-                                                }
+                                                
 
                                                
                                         </span>

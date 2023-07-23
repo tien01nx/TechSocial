@@ -23,7 +23,7 @@ $('#searchInput').on('input', function () {
     // Build search results HTML
     let searchResultsHtml = '';
     for (let product of filteredProducts) {
-        //searchResultsHtml += `<li><a class="dropdown-item" href="#">${product.title} by ${product.author}</a></li>`;
+       /* searchResultsHtml += `<li><a class="dropdown-item" href="#">${product.title} by ${product.author}</a></li>`;*/
         searchResultsHtml += `<li><a class="dropdown-item" href="/Home/Details/${product.id}">${product.title}</a></li>`;
 
     }
