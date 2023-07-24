@@ -40,17 +40,35 @@
 					<li class="sidebar-header">
 						Quản trị viên
 					</li>
+					  @if (User.IsInRole("Admin"))
+                      {
+						<li class="sidebar-item active">
+							<a class="sidebar-link" asp-area="Admin" asp-controller="TblCategories" asp-action="Index">
+								<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Quản lý Danh Mục</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="Admin" asp-controller="TblPosts" asp-action="Index">
+								<i class="far fa-list-alt"></i> <span class="align-middle">Quản lý Bài Viết</span>
+							</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="Admin" asp-controller="Account" asp-action="Index">
+								<i class="far fa-list-alt"></i> <span class="align-middle">Quản lý Bài Viết</span>
+							</a>
+						</li>
+					}
+					else
+					{
 
-					<li class="sidebar-item active">
-						<a class="sidebar-link" asp-area="Admin" asp-controller="TblCategories" asp-action="Index">
-							<i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Quản lý Danh Mục</span>
-						</a>
-					</li>
-					<li class="sidebar-item">
-						<a class="sidebar-link" asp-area="Admin" asp-controller="TblPosts" asp-action="Index">
-							<i class="far fa-list-alt"></i> <span class="align-middle">Quản lý Bài Viết</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" asp-area="Admin" asp-controller="TblPosts" asp-action="Index">
+								<i class="far fa-list-alt"></i> <span class="align-middle">Quản lý Bài Viết</span>
+							</a>
+						</li>
+					}
+
+					
 
 				</ul>
 			</div>

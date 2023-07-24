@@ -33,6 +33,7 @@
     <link rel='stylesheet' id='ekit-widget-styles-css' href='~/lib/css/widget-styles292d.css?ver=2.8.8' type='text/css' media='all' />
     <link rel='stylesheet' id='ekit-widget-styles-css' href='~/lib/css/widget-styles292d.css?ver=2.8.8' type='text/css' media='all' />
     <link rel='stylesheet' id='ekit-widget-styles-css' href='~/lib/css/swiper.min48f5?ver=1' type='text/css' media='all' />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/js/swiper.min48f5.js"></script>
 
@@ -175,6 +176,8 @@
                                             font-family: 'Roboto';
                                             font-size: 14px;
                                             text-transform: uppercase;
+                                            border-radius: 5px;
+                                            padding: 10px 20px;
                                         }
                                     </style>
 
@@ -182,18 +185,35 @@
                                         @if (SignInManager.IsSignedIn(User))
                                         {
 
-                                            <li class="navbar-right__item">
-                                                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                                                    <button id="logout" type="submit">Logout</button>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    @UserManager.GetUserName(User)
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                  
+                                                      @if (User.IsInRole("Admin"))
+                                                    {
+                                                        <a class="dropdown-item" id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                                                        <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()">Logout</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a class="dropdown-item" id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">Quản lý bài viết</a>
+
+
+                                                        <a class="dropdown-item" href="/User/UserPost">Các bài viết vừa xem</a>
+                                                        <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()">Đăng xuất</a>
+                                                    }
+
+                                                   
+                                                </div>
+                                            </div>
+
+                                          
+                                                <form style="display: none;" id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                                 
                                                 </form>
-                                            </li>
-
-                                            <li class="navbar-right__item">
-                                                <a id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">
-                                                    Admin
-                                                </a>
-                                            </li>
-
+                                           
 
                                         }
                                         else

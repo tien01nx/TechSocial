@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TechSocial.Models;
 
@@ -11,9 +12,11 @@ using TechSocial.Models;
 namespace TechSocial.Migrations
 {
     [DbContext(typeof(TechSocialDbConText))]
-    partial class TechSocialDbConTextModelSnapshot : ModelSnapshot
+    [Migration("20230724023626_hehe")]
+    partial class hehe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -8,7 +8,7 @@ using TechSocial.Repository.IRepository;
 
 namespace TechSocial.Controllers
 {
-    [Authorize]
+  
     public class UserController : Controller
     {
 		private readonly IUnitOfWork _unitOfWork;
@@ -22,12 +22,56 @@ namespace TechSocial.Controllers
         {
 
             dynamic myModel = new ExpandoObject();
-            myModel.ListPostUser = _unitOfWork.Post.GetAll(u => u.IdentityUser.Id.Equals(Id), includeProperties: "Category,IdentityUser").ToList();
+            myModel.ListPostUser = _unitOfWork.Post.GetAll(u => u.IdentityUser.Id.Equals(Id), includeProperties: "Category,IdentityUser").Take(3).ToList();
             myModel.InfoUser= _unitOfWork.Post.Get(u=>u.IdentityUser.Id.Equals(Id),includeProperties:"IdentityUser");
 
             return View(myModel);
            
         }
+
+
+
+        // lấy thêm dữ liệu
+
+
+        // User/LoadMorePosts
+        [HttpGet]
+        public IActionResult LoadMorePosts(string Id, int offset)
+        {
+            var posts = _unitOfWork.Post.GetAll(u => u.AccountId.Equals(Id),includeProperties: "IdentityUser")
+                        .Skip(offset).Take(3).ToList();
+            return Json(posts);
+        }
+
+
+
+        [Authorize]
+        public IActionResult UserPost()
+		{
+            var potss = new List<TblPost>();
+
+            // Lấy từ cookie
+            foreach (var cookie in Request.Cookies)
+            {
+                if (cookie.Key.StartsWith("BaiViet_"))
+                {
+                    var postid = int.Parse(cookie.Key.Substring("BaiViet_".Length));
+                    var product = _unitOfWork.Post.Get(u => u.PostId == postid, includeProperties: "Category,IdentityUser");
+                    if (product != null)
+                    {
+                        potss.Add(product);
+                    }
+                }
+            }
+
+            return View(potss);
+
+		}
+
+
+
+      
+
 
         [HttpPost]
         public IActionResult PostComment(TblComments tblComments)

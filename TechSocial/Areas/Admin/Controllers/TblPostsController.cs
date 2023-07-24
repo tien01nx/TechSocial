@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using TechSocial.Models;
 using Microsoft.AspNetCore.Authorization;
+using TechSocial.Models.DTO;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
@@ -21,8 +22,8 @@ namespace TechSocial.Areas.Admin.Controllers
     [Authorize]
     public class TblPostsController : Controller
     {
-     
-       
+
+
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -30,9 +31,9 @@ namespace TechSocial.Areas.Admin.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public TblPostsController( IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork,UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public TblPostsController(IWebHostEnvironment webHostEnvironment, IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
-         
+
             _signInManager = signInManager;
             _webHostEnvironment = webHostEnvironment;
             _unitOfWork = unitOfWork;
@@ -40,12 +41,13 @@ namespace TechSocial.Areas.Admin.Controllers
         }
 
         // GET: Admin/TblPosts
-        public  IActionResult Index()
+        public IActionResult Index()
         {
             //var claimsIdentity = (ClaimsIdentity)User.Identity;
             //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             var categories = _unitOfWork.Category.GetAll().ToList();
             var users = _userManager.Users.ToList();
+
 
             //var users = _repository.GetAccounts();
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
@@ -73,7 +75,7 @@ namespace TechSocial.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var tblPost =  _unitOfWork.Post.Get(u=>u.PostId== id);
+            var tblPost = _unitOfWork.Post.Get(u => u.PostId == id);
             if (tblPost == null)
             {
                 return NotFound();
@@ -91,85 +93,93 @@ namespace TechSocial.Areas.Admin.Controllers
             var categories = _unitOfWork.Category.GetAll();
             ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
 
-           
+
             return View();
         }
 
-        // POST: Admin/TblPosts/Create
-      
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Create(TblPost tblPost, IFormFile? file)
         {
-            if (ModelState.IsValid)
+            var response = new { success = false, message = "", data = (PostResponseData)null };
+
+            if (!ModelState.IsValid)
             {
+                response = new { success = false, message = "Invalid data.", data = (PostResponseData)null };
+                return Json(response);
+            }
 
-                try
+            try
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null && file.Length > 0)
                 {
-                    string wwwRootPath = _webHostEnvironment.WebRootPath;
-                    if (file != null && file.Length > 0)
+                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                    if (fileExtension != ".png" && fileExtension != ".jpg")
                     {
-                        string fileExtension = Path.GetExtension(file.FileName).ToLower();
-                        if (fileExtension != ".png" && fileExtension != ".jpg")
-                        {
-                            throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
-                        }
-
-                        string filename = Guid.NewGuid().ToString() + fileExtension;
-                        string postPath = Path.Combine(wwwRootPath, @"image\Post");
-
-                        string filePath = Path.Combine(postPath, filename);
-                        using (var fileStream = new FileStream(filePath, FileMode.Create))
-                        {
-                            file.CopyTo(fileStream);
-                        }
-
-                        tblPost.ImgSrc = @"\image\Post\" + filename;
-                        tblPost.CreatedAt = DateTime.Now;
+                        throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
                     }
 
-                    _unitOfWork.Post.Add(tblPost);
-                    _unitOfWork.Save();
-                   
-                    return RedirectToAction("Index");
+                    string filename = Guid.NewGuid().ToString() + fileExtension;
+                    string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+                    string filePath = Path.Combine(postPath, filename);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    tblPost.ImgSrc = @"\image\Post\" + filename;
+                    var claimsIdentity = (ClaimsIdentity)User.Identity;
+                    var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                    tblPost.AccountId = userId;
+                    tblPost.CreatedAt = DateTime.Now;
                 }
-                catch (Exception ex)
+
+                _unitOfWork.Post.Add(tblPost);
+                _unitOfWork.Save();
+                TblCategory tblCategory = _unitOfWork.Category.Get(u => u.CategoryId == tblPost.CategoryId);
+
+                // Trả về dữ liệu bài viết đã tạo trong data
+                var responseData = new PostResponseData
                 {
-                    ModelState.AddModelError(string.Empty, ex.Message);
-                }
+                    PostId = tblPost.PostId,
+                    Title = tblPost.Title,
+                    ImgSrc = tblPost.ImgSrc,
+                    CreatedAt = tblPost.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "N/A",
+                    CategoryName = tblCategory.CategoryName,
+                    UserName = _userManager.GetUserName(User)
+                    // Add other fields as needed
+                };
+
+                response = new
+                {
+                    success = true,
+                    message = "Post created successfully.",
+                    data = responseData
+                };
             }
-            return View(tblPost);
+            catch (Exception ex)
+            {
+                response = new { success = false, message = ex.Message, data = (PostResponseData)null };
+            }
+
+
+
+
+            return Json(response);
         }
 
-        // GET: Admin/TblPosts/Edit/5
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var tblPost = _unitOfWork.Post.Get(u=>u.PostId == id);
-            if (tblPost == null)
-            {
-                return NotFound();
 
-            }
-            var categories = _unitOfWork.Category.GetAll();
-            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
 
-           
-
-            return View(tblPost);
-        }
-
-        // POST: Admin/TblPosts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // /Admin/TblPosts/Edit
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, TblPost tblPost, IFormFile? file)
+        public IActionResult Edit(TblPost ? tblPost, IFormFile? file)
         {
-            if (ModelState.IsValid)
+            var response = new { success = false, message = "", data = (PostResponseData)null };
+
+            try
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if (file != null && file.Length > 0)
@@ -193,21 +203,182 @@ namespace TechSocial.Areas.Admin.Controllers
                 }
 
                 tblPost.CreatedAt = DateTime.Now;
-
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-
                 tblPost.AccountId = userId;
+
                 _unitOfWork.Post.Update(tblPost);
                 _unitOfWork.Save();
-                return RedirectToAction("Index");
+                TblCategory tblCategory = _unitOfWork.Category.Get(u => u.CategoryId == tblPost.CategoryId);
 
+                // Trả về dữ liệu bài viết đã tạo trong data
+                var responseData = new PostResponseData
+                {
+                    PostId = tblPost.PostId,
+                    Title = tblPost.Title,
+                    ImgSrc = tblPost.ImgSrc,
+                    Content = tblPost.Content,
+                    CreatedAt = tblPost.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "N/A",
+                    CategoryName = tblCategory.CategoryName,
+                    UserName = _userManager.GetUserName(User),
+                    CategoryId = tblPost.CategoryId
+                };
+
+                response = new
+                {
+                    success = true,
+                    message = "Post updated successfully.",
+                    data = responseData
+                };
             }
-           
-                return View(tblPost);
+            catch (Exception ex)
+            {
+                response = new { success = false, message = ex.Message, data = (PostResponseData)null };
+            }
 
-           
+            return Json(response);
         }
+
+
+
+
+
+        // POST: Admin/TblPosts/Create
+
+        //[HttpPost]
+
+        //public IActionResult Create(TblPost tblPost, IFormFile? file)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        try
+        //        {
+        //            string wwwRootPath = _webHostEnvironment.WebRootPath;
+        //            if (file != null && file.Length > 0)
+        //            {
+        //                string fileExtension = Path.GetExtension(file.FileName).ToLower();
+        //                if (fileExtension != ".png" && fileExtension != ".jpg")
+        //                {
+        //                    throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
+        //                }
+
+        //                string filename = Guid.NewGuid().ToString() + fileExtension;
+        //                string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+        //                string filePath = Path.Combine(postPath, filename);
+        //                using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //                {
+        //                    file.CopyTo(fileStream);
+        //                }
+
+        //                tblPost.ImgSrc = @"\image\Post\" + filename;
+        //                tblPost.CreatedAt = DateTime.Now;
+        //            }
+
+        //            _unitOfWork.Post.Add(tblPost);
+        //            _unitOfWork.Save();
+
+        //            return RedirectToAction("Index");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ModelState.AddModelError(string.Empty, ex.Message);
+        //        }
+        //    }
+        //    return View(tblPost);
+        //}
+
+        // GET: Admin/TblPosts/Edit/5
+        public IActionResult Edit(int? id)
+        {
+            var response = new { success = false, message = "", data = (PostResponseData)null };
+
+            if (id == null)
+            {
+                response = new { success = false, message = "Invalid ID.", data = (PostResponseData)null };
+                return Json(response);
+            }
+
+            var tblPost = _unitOfWork.Post.Get(u => u.PostId == id);
+            if (tblPost == null)
+            {
+                response = new { success = false, message = "Post not found.", data = (PostResponseData)null };
+                return Json(response);
+            }
+
+            TblCategory tblCategory = _unitOfWork.Category.Get(u => u.CategoryId == tblPost.CategoryId);
+            // Create the response data
+            var responseData = new PostResponseData
+            {
+                PostId = tblPost.PostId,
+                Title = tblPost.Title,
+                ImgSrc = tblPost.ImgSrc,
+                Content = tblPost.Content,
+                CreatedAt = tblPost.CreatedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "N/A",
+                CategoryName = tblCategory.CategoryName,
+                UserName = _userManager.GetUserName(User),
+                CategoryId = tblPost.CategoryId
+                // Add other fields as needed
+            };
+
+            response = new
+            {
+                success = true,
+                message = "Post retrieved successfully.",
+                data = responseData
+            };
+
+            return Json(response);
+        }
+
+
+        // POST: Admin/TblPosts/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+
+        //public IActionResult Edit(int id, TblPost tblPost, IFormFile? file)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        string wwwRootPath = _webHostEnvironment.WebRootPath;
+        //        if (file != null && file.Length > 0)
+        //        {
+        //            string fileExtension = Path.GetExtension(file.FileName).ToLower();
+        //            if (fileExtension != ".png" && fileExtension != ".jpg")
+        //            {
+        //                throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
+        //            }
+
+        //            string filename = Guid.NewGuid().ToString() + fileExtension;
+        //            string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+        //            string filePath = Path.Combine(postPath, filename);
+        //            using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                file.CopyTo(fileStream);
+        //            }
+
+        //            tblPost.ImgSrc = @"\image\Post\" + filename;
+        //        }
+
+        //        tblPost.CreatedAt = DateTime.Now;
+
+        //        var claimsIdentity = (ClaimsIdentity)User.Identity;
+        //        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        //        tblPost.AccountId = userId;
+        //        _unitOfWork.Post.Update(tblPost);
+        //        _unitOfWork.Save();
+        //        return RedirectToAction("Index");
+
+        //    }
+
+        //        return View(tblPost);
+
+
+        //}
 
         // GET: Admin/TblPosts/Delete/5
         public IActionResult Delete(int? id)
@@ -216,7 +387,7 @@ namespace TechSocial.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var tblPost =  _unitOfWork.Post.Get(u=>u.PostId == id);
+            var tblPost = _unitOfWork.Post.Get(u => u.PostId == id);
             if (tblPost == null)
             {
                 return NotFound();
@@ -232,10 +403,10 @@ namespace TechSocial.Areas.Admin.Controllers
 
         // POST: Admin/TblPosts/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+
         public IActionResult DeleteConfirmed(int id)
         {
-            var tblPost = _unitOfWork.Post.Get(u=>u.PostId==id);
+            var tblPost = _unitOfWork.Post.Get(u => u.PostId == id);
             if (tblPost != null)
             {
                 if (tblPost.ImgSrc != null)
@@ -256,12 +427,12 @@ namespace TechSocial.Areas.Admin.Controllers
 
             }
             return View(tblPost);
-            
+
         }
 
         private bool TblPostExists(int id)
         {
-          return true;
+            return true;
         }
 
         // https://localhost:7139/admin/company/getall 
@@ -269,7 +440,7 @@ namespace TechSocial.Areas.Admin.Controllers
         public IActionResult GetAll()
         {
             var users = _userManager.Users.ToList();
-        
+
 
 
             return Json(new

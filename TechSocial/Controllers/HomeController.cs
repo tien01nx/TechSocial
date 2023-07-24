@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using System.Diagnostics;
 using TechSocial.Models;
 using TechSocial.Models.ViewModel;
@@ -53,6 +54,14 @@ namespace TechSocial.Controllers
             ViewBag.PostNewest = _unitOfWork.Post.GetNewest();
             ViewBag.Comments = _unitOfWork.Comment.GetAll(u => u.PostId == id, includeProperties: "TblPost,IdentityUser").ToList();
             TblComments tblComments= new TblComments();
+
+            // thêm dữ liệu vào sesion để hiện ra danh sách bài viết đã xem
+            var cookieOptions = new CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(30)  // cookie will expire in 30 days
+            };
+            // Create a new cookie for the product view
+            Response.Cookies.Append($"BaiViet_{id}", DateTime.Now.ToString(), cookieOptions);
             return View(tblComments);
         }
         public IActionResult Privacy()

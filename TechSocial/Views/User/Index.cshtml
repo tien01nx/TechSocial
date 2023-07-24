@@ -10,24 +10,25 @@
         <div class="row">
 
 
-            <main class="col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12">
+            <main class="col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12" id="posts">
 
                 @foreach (var item in Model.ListPostUser)
                 {
-                    <div>
-                    <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">
-                        <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
-                            <div class="dropdown-list-image mr-3">
-                                <img class="rounded-circle" src="~/image/imageUser.jpg" alt="Avatar" height="60px" width="60px">
-                                <div class="status-indicator bg-success"></div>
-                            </div>
-                            <div class="font-weight-bold">
-                                <div class="text-truncate">@item.IdentityUser.UserName</div>
-                                <div class="small text-gray-500">Author</div>
-                            </div>
+                    <div id="posts">
+
+                        <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">
+                            <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
+                                <div class="dropdown-list-image mr-3">
+                                    <img class="rounded-circle" src="~/image/imageUser.jpg" alt="Avatar" height="60px" width="60px">
+                                    <div class="status-indicator bg-success"></div>
+                                </div>
+                                <div class="font-weight-bold">
+                                    <div class="text-truncate">@item.IdentityUser.UserName</div>
+                                    <div class="small text-gray-500">Author</div>
+                                </div>
                                 <span class="ml-auto small">@item.CreatedAt</span>
-                        </div>
-                        <div class="p-3 border-bottom osahan-post-body">
+                            </div>
+                            <div class="p-3 border-bottom osahan-post-body">
                                 @{
                                     IEnumerable<string> contentLines = !string.IsNullOrEmpty(item.Content)
                                     ? item.Content.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None)
@@ -37,27 +38,28 @@
                                 }
 
 
-                            <p class="description-limit">
+                                <p class="description-limit">
 
-                                @Html.Raw(limitedContent)
-                            </p>
+                                    @Html.Raw(limitedContent)
+                                </p>
                                 <a href="/Home/Details/@item.PostId">Xem thêm</a>
-                        </div>
-                        <div class="p-3 border-bottom osahan-post-footer">
+                            </div>
+                            <div class="p-3 border-bottom osahan-post-footer">
                                 <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-eye" aria-hidden="true"></i> 16</a>
                                 <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-comment-o" aria-hidden="true"></i>  8</a>
 
-                        </div>
-                        @*  <div class="p-3">
-                    <button type="button" class="btn btn-outline-primary btn-sm mr-1">Awesome!!</button>
-                    <button type="button" class="btn btn-light btn-sm mr-1">😍</button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Whats it about?</button>
-                    <button type="button" class="btn btn-outline-secondary btn-sm mr-1">Oooo Great Wow</button>
-                    </div> *@
-                    </div>
+                            </div>
 
+                        </div>
                     </div>
+                
+
                     }
+                <!-- HTML -->
+
+
+                <button data-id="@Model.InfoUser.IdentityUser.Id" id="loadMoreButton">Xem thêm</button>
+
 
             </main>
                
@@ -98,3 +100,11 @@
         </div>
     </div>
 </div>
+
+
+@section Scripts{ 
+
+    <script src="~/js/user.js" asp-append-version="true"></script>
+   
+}
+

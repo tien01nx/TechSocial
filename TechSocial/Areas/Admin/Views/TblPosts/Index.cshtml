@@ -4,14 +4,159 @@
     ViewData["Title"] = "Index";
 }
 
+@{
+    int STT = 1;
+}
+
+<div class="container-fluid p-0">
+
+    <div class="mb-3">
+        <h1 class="h3 d-inline align-middle">Quản lý bài viết</h1>
+    </div>
+
+    <div class="mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="showModal()">
+            <i class="align-middle" data-feather="plus"></i> Thêm mới
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-xl-12">
+
+            <div class="card">
+                <table class="table table-striped" id="tblCategory">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>
+                                Tiêu đề
+                            </th>
+                            <th>
+                                Ngày viết
+                            </th>
+                            <th>
+                                Ảnh minh họa
+                            </th>
+                            <th>
+                                Tác giả
+                            </th>
+                            <th>
+                                Danh mục
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+
+                        @foreach (var item in Model)
+                        {
+
+                            <tr id="category-@item.PostId" data-stt="@STT">
+                                <td>@STT</td>
+                                <td id="title-@item.PostId">
+                                    @(item.Title.Length > 40 ? item.Title.Substring(0, 40) + "..." : item.Title)
+                                </td>
+
+                                <td id="createdAt-@item.PostId">
+                                    @item.CreatedAt
+                                </td>
+                                <td id="imagesrc-@item.PostId">
+                                    <img width="100" height="160"
+                                         src="@item.ImgSrc">
+                                </td>
+                                <td id="username-@item.PostId">
+                                    @item.IdentityUser.UserName
+                                </td>
+                                <td id="category-name-@item.PostId">
+                                    @item.Category.CategoryName
+                                </td>
+                                <td class="table-action">
+                                    <a href="#" onclick="populateModalWithIndustryDetail(@item.PostId)">
+                                        <i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i>
+                                    </a>
+                                    <a onclick="deleteIndustry(@item.PostId)">
+                                        <i class="fal fa-trash" style="color: #000000;"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                           STT++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Thêm mới một danh mục</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" onclick="resetText()"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Tên danh mục <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Title" placeholder="Nhập tên danh mục" style="margin-bottom: 5px;" />
+                    <span id="checkName" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Thể loại<span class="text-danger">*</span></label>
+                    <select name="TblPost.CategoryId" id="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                </div>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Nội dung<span class="text-danger">*</span></label>
+                    <textarea id="Content" class="form-control border-0 shadow "> </textarea>
+                    <span id="checkDisplay" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="control-label">Ảnh minh hoạ</label>
+
+                    <input type="file" name="file" class="form-control"  />
+                </div>
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetText()">Đóng</button>
+                <button type="button" class="btn btn-primary" id="save" onclick="saveIndustry()">Thêm mới</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+@*
 <div class="col-md-12">
     <div class="tile">
         <div class="tile-body">
             <div class="row element-button">
                 <div class="col-sm-2">
-                    <a class="btn btn-add btn-sm mb-3" asp-action="Create" title="Thêm">
+                    <a class="btn btn-add btn-sm" asp-action="Create" title="Thêm">
                         <i class="fas fa-plus"></i>
                         Tạo Bài Viết
                     </a>
@@ -23,29 +168,21 @@
                         <th width="10"><input type="checkbox" id="all"></th>
 
                         <th>
-                            Tiêu đề
+                          Tiêu đề
                         </th>
                         <th>
                             Ngày viết
                         </th>
 
-                        @*  <th>
-                        Nội dung
-                        </th> *@
+
                         <th>
                             Ảnh minh họa
                         </th>
-                        @*   <th>
-                        Lượt xem
-                        </th>
-                        <th>
-                        Bình luận
-                        </th> *@
                         <th>
                             Tác giả
                         </th>
                         <th>
-                            Danh mục
+                           Danh mục
                         </th>
                         <th></th>
                     </tr>
@@ -64,29 +201,19 @@
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
                             </td>
 
-                            @* <td>
-                        <p class="description-limit">@Html.Raw(item.Content)</p>
-                        </td>
-                        <td>
-                        <p class="description-limit">@Html.DisplayFor(modelItem => item.Content)</p>
-                        </td> *@
+
                             <td>
 
                                 <img width="100" height="160"
                                      src="@Html.DisplayFor(modelItem => item.ImgSrc)">
 
                             </td>
-                            @* <td>
-                        @Html.DisplayFor(modelItem => item.PostsView)
-                        </td>
-                        <td>
-                        @Html.DisplayFor(modelItem => item.Comments)
-                        </td> *@
-                            <td>
+
+                           <td>
                                 @Html.DisplayFor(modelItem => item.IdentityUser.UserName)
-                            </td>
+                           </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                                @Html.DisplayFor(modelItem => item.Category.Title)
                             </td>
                             <td>
                                 <a class="btn btn-primary btn-sm trash" title="Xóa" asp-action="Delete" asp-route-id="@item.PostId">
@@ -104,4 +231,17 @@
             </table>
         </div>
     </div>
-</div>
+</div> *@
+
+
+@section Scripts {
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
+    <script src="/js/post.js" asp-append-version="true"></script>
+}

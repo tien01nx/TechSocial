@@ -11,9 +11,8 @@ namespace TechSocial.Models
 
     {
      
-        //[ValidateNever]
-        //public List<TblPost>TblPosts { get; set; }
-        //[ValidateNever]
-        //public List<TblRating> TblRatings { get; set; }
+        public string? Name { get; set; }
+        public string ?Image { get; set; }
+      
     }
 }
