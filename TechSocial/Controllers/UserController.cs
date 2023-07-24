@@ -74,6 +74,7 @@ namespace TechSocial.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public IActionResult PostComment(TblComments tblComments)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
