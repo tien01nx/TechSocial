@@ -95,13 +95,13 @@
     <div class="modal-dialog modal-dialog-scrollable" >
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Thêm mới một danh mục</h5>
+                <h5 class="modal-title" id="myModalLabel">Thêm mới bài viết</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close" onclick="resetText()"></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="control-label">Tên danh mục <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="Title" placeholder="Nhập tên danh mục" style="margin-bottom: 5px;" />
+                    <label class="control-label">Tên bài viết <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="Title" placeholder="Nhập tên bài viết" style="margin-bottom: 5px;" />
                     <span id="checkName" class="text-danger"></span>
                 </div>
             </div>
@@ -109,7 +109,7 @@
 
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="control-label">Thể loại<span class="text-danger">*</span></label>
+                    <label class="control-label">Danh mục <span class="text-danger">*</span></label>
                     <select name="TblPost.CategoryId" id="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 </div>
             </div>

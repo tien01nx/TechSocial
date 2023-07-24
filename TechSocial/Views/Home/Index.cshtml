@@ -55,10 +55,10 @@
                                                                         @item.CreatedAt
                                                                     </span>
 
-                                                                    <span class="post-view">
+                                                                  @*   <span class="post-view">
                                                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                                                        @item.PostsView
-                                                                    </span>
+                                                                    </span> *@
                                                                 </div>
                                                                                                                                 @{
                                                             var limitedContent = item.Content.Length <= 20 ? item.Content : item.Content.Substring(0, 20) + "...";
@@ -339,10 +339,10 @@
                                                                         @item.Title
                                                                     </a>
                                                                 </h3>
-                                                            <span class="post-view">
+                                                           @*  <span class="post-view">
                                                                 <i class="fa fa-eye" aria-hidden="true"></i>
                                                                 @item.PostsView
-                                                            </span>
+                                                            </span> *@
                                                                 <span class="post-date">
                                                                      @item.CreatedAt
                                                                 </span>

@@ -41,7 +41,7 @@ $(document).ready(function () {
                                 <div class="status-indicator bg-success"></div>
                             </div>
                             <div class="font-weight-bold">
-                                <div class="text-truncate">${post.identityUser.username}</div>
+                                <div class="text-truncate">${post.identityUser.userName}</div>
                                 <div class="small text-gray-500">Author</div>
                             </div>
                                 <span class="ml-auto small">${post.createdAt}t</span>

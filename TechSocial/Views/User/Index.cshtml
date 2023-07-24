@@ -45,9 +45,11 @@
                                 <a href="/Home/Details/@item.PostId">Xem thêm</a>
                             </div>
                             <div class="p-3 border-bottom osahan-post-footer">
-                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-eye" aria-hidden="true"></i> 16</a>
-                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-comment-o" aria-hidden="true"></i>  8</a>
-
+                              @*   <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>@item.PostsView
+                                </a>
+                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
+ *@
                             </div>
 
                         </div>
@@ -58,8 +60,8 @@
                 <!-- HTML -->
 
 
-                <button data-id="@Model.InfoUser.IdentityUser.Id" id="loadMoreButton">Xem thêm</button>
-
+               @*  <button data-id="@Model.InfoUser.IdentityUser.Id" id="loadMoreButton">Xem thêm</button>
+ *@
 
             </main>
                

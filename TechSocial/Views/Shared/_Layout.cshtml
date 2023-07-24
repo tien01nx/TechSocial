@@ -193,12 +193,12 @@
                                                   
                                                       @if (User.IsInRole("Admin"))
                                                     {
-                                                        <a class="dropdown-item" id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                                                        <a class="dropdown-item" id="register" asp-area="Admin" asp-controller="TblCategories" asp-action="Index">Admin</a>
                                                         <a class="dropdown-item" href="javascript:void(0)" onclick="document.getElementById('logoutForm').submit()">Logout</a>
                                                     }
                                                     else
                                                     {
-                                                        <a class="dropdown-item" id="register" asp-area="Admin" asp-controller="Home" asp-action="Index">Quản lý bài viết</a>
+                                                        <a class="dropdown-item" id="register" asp-area="Admin" asp-controller="TblPosts" asp-action="Index">Quản lý bài viết</a>
 
 
                                                         <a class="dropdown-item" href="/User/UserPost">Các bài viết vừa xem</a>
