@@ -33,6 +33,7 @@
     <link rel='stylesheet' id='ekit-widget-styles-css' href='~/lib/css/widget-styles292d.css?ver=2.8.8' type='text/css' media='all' />
     <link rel='stylesheet' id='ekit-widget-styles-css' href='~/lib/css/widget-styles292d.css?ver=2.8.8' type='text/css' media='all' />
     <link rel='stylesheet' id='ekit-widget-styles-css' href='~/lib/css/swiper.min48f5?ver=1' type='text/css' media='all' />
+    <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/js/swiper.min48f5.js"></script>
@@ -140,18 +141,19 @@
                                                                                 </div>
                                                                                 </form>
                                                                                 </div> *@
-
+                                                                                <form asp-action="SearchCategory" asp-controller="Post" >
                                                                                 <div class="search-width-height d-flex">
                                                                                     <div class="dropdown flex-grow-1">
-                                                                                        <input class="form-control" type="search" placeholder="Search" id="searchInput" name="search" autocomplete="off">
+                                                                                            <input class="form-control"  type="search" placeholder="Search" id="searchInput" name="search" autocomplete="off">
                                                                                         <ul class="dropdown-menu" id="searchResults" aria-labelledby="searchInput">
                                                                                             <!-- Search results will be inserted here -->
                                                                                         </ul>
                                                                                     </div>
-                                                                                    <button class="input-group-btn search-button">
+                                                                                    <button class="input-group-btn search-button ">
                                                                                         <i class="fa fa-search" aria-hidden="true"></i>
                                                                                     </button>
                                                                                 </div>
+                                                                                </form>
                                                                             </div>
                                                                         </div>
                                                                     </li>
@@ -327,9 +329,10 @@
 
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/search.js"></script>
+ @*    <script src="~/js/search.js"></script> *@
 
-    <script src="https://cdn.tiny.cloud/1/go2gbbh0374j92i5q8hajkjsq1odkk8u6lvre7w2yoeislth/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="~/ckeditor/ckeditor.js" referrerpolicy="origin"></script>
+    @* <script src="https://cdn.tiny.cloud/1/go2gbbh0374j92i5q8hajkjsq1odkk8u6lvre7w2yoeislth/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> *@
     <script type='text/javascript' id='digiqole-script-js-extra'>
         /* <![CDATA[ */
         var digiqole_ajax = { "ajax_url": "https:\/\/demo.themewinter.com\/wp\/digiqoles\/personal-blog\/wp-admin\/admin-ajax.php", "blog_sticky_sidebar": "" };

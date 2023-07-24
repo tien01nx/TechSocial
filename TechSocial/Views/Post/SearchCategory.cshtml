@@ -1,0 +1,52 @@
+﻿ @model IEnumerable<PostDTO>
+<section id="main-content" class="blog main-container" role="main">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-lg-8 sidebar-right">
+
+                <div class="category-main-desc">
+                    <span> </span>
+                </div>
+
+                <div class="main-content-inner category-layout7">
+
+                    <div class="row" id="productContainer">
+                        @foreach(var item in Model)
+                        {
+                            <div class="col-lg-4 col-md-12">
+                                <div id="sidebar" class="sidebar" role="complementary">
+                                    <div id="pu_media_upload-2" class="widget pu_media_upload">
+                                        <div class="widgets author-box-widget ts-grid-box">
+                                            <div class="ts-post-thumb">
+                                                <a href="/Home/Details/@item.Id">
+                                                    <img class="img-fluid" src="@item.Image"
+                                                         alt="">
+                                                </a>
+                                            </div>
+                                            <div class="post-content">
+                                                <h3 class="post-title md">
+                                                    <a href="/Home/Details/@item.Id">@item.Title</a>
+                                                </h3>
+                                                <p>
+                                                   @item.Title
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                  
+                    </div>
+                </div>
+            </div><!-- .col-md-8 -->
+          
+        </div>
+    </div>
+
+
+</section><!-- #main-content -->
+@section scripts{
+    <script src="./js/postcategory.js"></script>
+}

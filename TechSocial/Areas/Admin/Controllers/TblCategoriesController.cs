@@ -9,6 +9,7 @@ using TechSocial.Models;
 using NuGet.Protocol.Core.Types;
 using TechSocial.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using PagedList;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
@@ -24,10 +25,23 @@ namespace TechSocial.Areas.Admin.Controllers
         }
 
         // GET: Admin/TblCategories
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(_unitOfWork.Category.GetAll());
+        //}
+
+
+
+        public ActionResult Index(int page, int size)
         {
-            return View(_unitOfWork.Category.GetAll());
+            int pageSize = size > 0 ? size : 10;
+            int pageNumber = page > 0 ? page : 1;
+
+            var recruitments = _unitOfWork.Category.GetAll().ToList();
+            var pagedList = new PagedList<TblCategory>(recruitments, pageNumber, pageSize);
+            return View(pagedList);
         }
+
 
 
 
@@ -134,25 +148,46 @@ namespace TechSocial.Areas.Admin.Controllers
         // POST: Admin/TblCategories/Delete/5
         [HttpPost, ActionName("Delete")]
  
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public  IActionResult DeleteConfirmed(int id)
         {
             var tblCategory =  _unitOfWork.Category.Get(u=>u.CategoryId==id);
             if (tblCategory == null)
             {
-                return NotFound();
+                return BadRequest();
             }
             else
             {
                 _unitOfWork.Category.Remove(tblCategory);
                 _unitOfWork.Save();
+                return Ok(tblCategory);
 
             }
-            return RedirectToAction(nameof(Index));
+           
         }
 
         private bool TblCategoryExists(int id)
         {
           return true;
         }
+
+
+        //tìm kiếm 
+        [HttpGet]
+        public IActionResult Search(string name)
+        {
+            var results = _unitOfWork.Category.GetAll(u => u.CategoryName.Contains(name));
+            try
+            {
+                return Ok(results);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
     }
 }

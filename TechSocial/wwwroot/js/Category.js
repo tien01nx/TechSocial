@@ -15,10 +15,12 @@ function showModal(isUpdate, id) {
 }
 
 function saveIndustry() {
-    if (updateId) {
-        updateIndustry(updateId);
-    } else {
-        createIndustry();
+    if (validateInput()) {
+        if (updateId) {
+            updateIndustry(updateId);
+        } else {
+            createIndustry();
+        }
     }
 }
 
@@ -38,7 +40,7 @@ function updateIndustry(id) {
         if (this.readyState == 4 && this.status == 200) {
             console.log("hihi: " + industryData);
             toastr.success("Cập nhật thành công")
-            document.getElementById('category-name-' + id).innerHTML = industryData.Name;
+            document.getElementById('category-name-' + id).innerHTML = industryData.CategoryName;
             document.getElementById('display-order-' + id).innerHTML = industryData.Description;
             document.getElementById("btn-close").click();
         }
@@ -184,3 +186,72 @@ function resetText() {
     document.getElementById("checkDisplay").innerHTML = "";
 
 }
+
+function validateInput() {
+    var isValid = true;
+    var CategoryName = document.getElementById("CategoryName");
+    var Description = document.getElementById("Description");
+    var checkName = document.getElementById("checkName");
+    var checkDisplay = document.getElementById("checkDisplay");
+
+    // Reset error messages
+    checkName.innerHTML = "";
+    checkDisplay.innerHTML = "";
+
+    // Check if CategoryName is empty
+    if (!CategoryName.value.trim()) {
+        checkName.innerHTML = "Tên danh mục không được để trống";
+        isValid = false;
+    }
+
+    // Check if Description is empty
+    if (!Description.value.trim()) {
+        checkDisplay.innerHTML = "Mô tả danh mục không được để trống";
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+
+
+
+
+//Tìm kiêm 
+
+
+
+    function searchIndustries() {
+            var name = document.getElementById("name").value;
+    console.log("Name: " + name);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    var industries = JSON.parse(xhr.responseText);
+    var html = "";
+    for (var i = 0; i < industries.length; i++) {
+                        var industry = industries[i];
+    var STT = i + 1;
+    html += '<tr id="hihi-' + industry.categoryId + '">';
+        html += '<td class="col-1">' + STT + '</td>';
+        html += '<td id="industry-' + industry.categoryName + '" class="col-5">' + industry.categoryName + '</td>';
+        html += '<td class="col-3">' + industry.description + '</td>';
+        html += '<td class="table-action col-3">';
+            html += '<a onclick="getIndustryById(' + industry.categoryId + ')" data-bs-toggle="modal" data-bs-target="#myModal">';
+                html += '<i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i>';
+                html += '</a>';
+            html += '<a onclick="deleteIndustry(' + industry.categoryId + ')">';
+                html += '<i class="fal fa-trash" style="color: #000000;"></i>';
+                html += '</a>';
+            html += '</td>';
+        html += '</tr>';
+                    }
+    document.getElementById("tbody").innerHTML = html;
+    toastr.info("Tìm thấy: " + industries.length + " kết quả.");
+                }
+            };
+    xhr.open("GET", '/Admin/TblCategories/Search?name=' + encodeURIComponent(name), true);
+    xhr.send();
+        }
+
+    document.getElementById("search").addEventListener("click", searchIndustries);

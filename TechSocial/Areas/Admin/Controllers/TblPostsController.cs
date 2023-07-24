@@ -450,5 +450,41 @@ namespace TechSocial.Areas.Admin.Controllers
 
         }
 
+
+
+
+        [HttpGet]
+        public IActionResult Search(string name)
+        {
+            var results = _unitOfWork.Post.GetAll(u => u.Title.Contains(name), includeProperties: "IdentityUser,Category");
+
+            try
+            {
+                var responseData = results.Select(post => new PostResponseData
+                {
+                    PostId = post.PostId,
+                    Title = post.Title,
+                    CreatedAt = post.CreatedAt?.ToString("yyyy-MM-dd"), // Format the date as desired
+                    Content = post.Content,
+                    ImgSrc = post.ImgSrc,
+                    CategoryName = post.Category?.CategoryName ?? "", // Ensure the CategoryName is not null
+                    CategoryId = post.Category?.CategoryId,
+                    UserName = post.IdentityUser?.UserName ?? "", // Ensure the UserName is not null
+                    CommentsCount = post.TblRatings?.Count(),
+                    PostsView = post.PostsView
+                }).ToList();
+
+                return Ok(responseData);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
+
     }
 }

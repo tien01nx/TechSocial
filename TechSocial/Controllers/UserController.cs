@@ -21,11 +21,14 @@ namespace TechSocial.Controllers
 		public IActionResult Index(string Id)
         {
 
-            dynamic myModel = new ExpandoObject();
-            myModel.ListPostUser = _unitOfWork.Post.GetAll(u => u.IdentityUser.Id.Equals(Id), includeProperties: "Category,IdentityUser").Take(3).ToList();
-            myModel.InfoUser= _unitOfWork.Post.Get(u=>u.IdentityUser.Id.Equals(Id),includeProperties:"IdentityUser");
+            UserVM userVM = new UserVM()
+            {
+                ListPostUser = _unitOfWork.Post.GetAll(u => u.IdentityUser.Id.Equals(Id), includeProperties: "Category,IdentityUser").Take(3).ToList(),
+                InfoUser = _unitOfWork.Post.Get(u => u.IdentityUser.Id.Equals(Id), includeProperties: "IdentityUser")
+            };
+          
 
-            return View(myModel);
+            return View(userVM);
            
         }
 

@@ -35,10 +35,10 @@ namespace TechSocial.Controllers
             ViewData["UserName"] = new SelectList(users, "id", "UserName");
             ListPost listPost = new ListPost()
             {
-                AdnroidPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Android")).ToList(),
-                IosPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("iOS")).ToList(),
-                WindowsPost = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("Windows")).ToList(),
-                MacOs = _unitOfWork.Post.GetAll(u => u.Category.CategoryName.Equals("macOS")).ToList(),
+                AdnroidPost = _unitOfWork.Post.GetPostsWithCommentsCount("Android"),
+                IosPost = _unitOfWork.Post.GetPostsWithCommentsCount("iOS"),
+                WindowsPost = _unitOfWork.Post.GetPostsWithCommentsCount("Windows"),
+                MacOs = _unitOfWork.Post.GetPostsWithCommentsCount("macOS"),
                 PostNewest = _unitOfWork.Post.GetNewest()
             };
 
@@ -53,6 +53,11 @@ namespace TechSocial.Controllers
             ViewBag.TblPost = _unitOfWork.Post.Get(u => u.PostId == id, includeProperties: "Category,IdentityUser");
             ViewBag.PostNewest = _unitOfWork.Post.GetNewest();
             ViewBag.Comments = _unitOfWork.Comment.GetAll(u => u.PostId == id, includeProperties: "TblPost,IdentityUser").ToList();
+
+
+            ViewBag.SoBL = _unitOfWork.Comment.GetAll(u => u.PostId == id).Count();
+
+
             TblComments tblComments= new TblComments();
 
             // thêm dữ liệu vào sesion để hiện ra danh sách bài viết đã xem

@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using TechSocial.Models.DTO;
 
 namespace TechSocial.Models.ViewModel
 {
     public class ListPost
     {
         [ValidateNever]
-        public  IEnumerable<TblPost> ? AdnroidPost { get; set; }
+        public  IEnumerable<PostResponseData> ? AdnroidPost { get; set; }
         [ValidateNever]
-        public IEnumerable<TblPost>? IosPost { get; set; }
+        public IEnumerable<PostResponseData>? IosPost { get; set; }
         [ValidateNever]
-        public IEnumerable<TblPost>? WindowsPost { get; set; }
+        public IEnumerable<PostResponseData>? WindowsPost { get; set; }
         [ValidateNever]
-        public IEnumerable<TblPost>? MacOs { get; set; }
+        public IEnumerable<PostResponseData>? MacOs { get; set; }
         [ValidateNever]
-        public IEnumerable<TblPost>     ?PostNewest { get; set; }
+        public IEnumerable<TblPost>  ?PostNewest { get; set; }
         public TblPost ?TblPost { get; set; }
         [ValidateNever]
         public int ?PostId { get; set; }

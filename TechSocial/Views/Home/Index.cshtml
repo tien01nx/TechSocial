@@ -41,7 +41,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="post-content media-body align-self-center">
                                                                 <a class="post-cat" asp-action="Index" asp-controller="Post" asp-route-CategoryName="Windows"> 
-                                                                    @item.Category.CategoryName
+                                                                    @item.CategoryName
                                                                 </a>
                                                                 <h3 class="post-title">
                                                                     <a asp-action ="Details" asp-controller="Home" asp-route-id="@item.PostId"
@@ -54,6 +54,9 @@
                                                                         <i class="ts-icon ts-icon-clock-regular"></i>
                                                                         @item.CreatedAt
                                                                     </span>
+
+                                                                 @*    Tổng số bình luận *@
+                                                                    @* <span>@item.CommentsCount</span> *@
 
                                                                   @*   <span class="post-view">
                                                                         <i class="fa fa-eye" aria-hidden="true"></i>
@@ -132,7 +135,7 @@
                                                                    asp-action="Index" asp-controller="Post" asp-route-CategoryName="Ios"
                                                                    style="background-color:;color:#ffffff">
 
-                                                                    @item.Category.CategoryName
+                                                                    @item.CategoryName
                                                                 </a>
 
 
@@ -147,13 +150,16 @@
                                                                     <span class="post-author">
                                                                         <i class="ts-icon ts-icon-user-solid"></i>
                                                                         <a asp-action="Index" asp-controller="User" >
-                                                                            @(item.IdentityUser != null && item.IdentityUser.UserName != null ? item.IdentityUser.UserName : "Dịu Thanh")
+                                                                            @(item.UserName != null && item.UserName != null ? item.UserName : "Dịu Thanh")
                                                                         </a>
                                                                     </span>
                                                                     <span class="post-date">
                                                                         <i class="ts-icon ts-icon-clock-regular"></i>
                                                                         @item.CreatedAt
                                                                     </span>
+
+                                                                        @* <span>@item.CommentsCount</span> *@
+
                                                                     <span class="post-view">
                                                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                                                         @item.PostsView
@@ -231,7 +237,7 @@
                                                         <div class="post-content media-body align-self-center">
                                                             <a class="post-cat"
                                                                asp-action="Index" asp-controller="Post" asp-route-CategoryName="Android">
-                                                                @item.Category.CategoryName
+                                                                @item.CategoryName
                                                             </a>
                                                             <h3 class="post-title">
                                                                 <a asp-action ="Details" asp-controller="Home" asp-route-id="@item.PostId"
@@ -251,6 +257,11 @@
                                                                     @item.PostsView
                                                                 </span>
                                                             </div>
+
+                                                            h@* iện tổng số đã bình luận *@
+                                                            @* <span>@item.CommentsCount</span> *@
+
+
                                                           @*   <p>
                                                                 The same systems we built to handle peaks like the
                                                                 Cyber Monday online shopping surge, or to stream the

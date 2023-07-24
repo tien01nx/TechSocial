@@ -1,5 +1,4 @@
-﻿@model dynamic
-
+﻿@model UserVM
 <link type="text/css" rel="stylesheet" href="./lib/css/style.css">
 <link href="./lib/css/bootstrap.min.css" rel="stylesheet">
 
@@ -12,9 +11,10 @@
 
             <main class="col col-xl-9 order-xl-2 col-lg-12 order-lg-1 col-md-12 col-sm-12 col-12" id="posts">
 
-                @foreach (var item in Model.ListPostUser)
-                {
-                    <div id="posts">
+                <div id="postsContainer">
+                    @foreach (var item in Model.ListPostUser)
+                    {
+
 
                         <div class="box shadow-sm border rounded bg-white mb-3 osahan-post">
                             <div class="p-3 d-flex align-items-center border-bottom osahan-post-header">
@@ -45,68 +45,70 @@
                                 <a href="/Home/Details/@item.PostId">Xem thêm</a>
                             </div>
                             <div class="p-3 border-bottom osahan-post-footer">
-                              @*   <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary">
-                                    <i class="fa fa-eye" aria-hidden="true"></i>@item.PostsView
-                                </a>
-                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-comment-o" aria-hidden="true"></i></a>
- *@
+                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-eye" aria-hidden="true"></i> @item.PostsView</a>
+                                <a href="/Home/Details/@item.PostId" class="mr-3 text-secondary"><i class="fa fa-comment-o" aria-hidden="true"></i>  8</a>
+
                             </div>
 
                         </div>
-                    </div>
-                
+
+
+
 
                     }
-                <!-- HTML -->
+                    <!-- HTML -->
+                </div>
 
 
-               @*  <button data-id="@Model.InfoUser.IdentityUser.Id" id="loadMoreButton">Xem thêm</button>
- *@
+
+                <button data-id="@Model.InfoUser.IdentityUser.Id" id="loadMoreButton">Xem thêm</button>
 
             </main>
-               
-            <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
-               
 
-                    <div class="box mb-3 shadow-sm border rounded bg-white profile-box text-center">
-                        <div class="py-4 px-3 border-bottom">
-                            <img src="~/image/imageUser.jpg" class="img-fluid mt-2 rounded-circle" alt="Avatar">
+
+            <aside class="col col-xl-3 order-xl-1 col-lg-6 order-lg-2 col-md-6 col-sm-6 col-12">
+
+
+                <div class="box mb-3 shadow-sm border rounded bg-white profile-box text-center">
+                    <div class="py-4 px-3 border-bottom">
+                        <img src="~/image/imageUser.jpg" class="img-fluid mt-2 rounded-circle" alt="Avatar">
                         <h5 class="font-weight-bold text-dark mb-1 mt-4">@Model.InfoUser.IdentityUser.UserName</h5>
 
-                        </div>
-                       @*  <div class="d-flex">
-                            <div class="col-6 border-right p-3">
-                                <h6 class="font-weight-bold text-dark mb-1">358</h6>
-                                <p class="mb-0 text-black-50 small">Connections</p>
-                            </div>
-                            <div class="col-6 p-3">
-                                <h6 class="font-weight-bold text-dark mb-1">85</h6>
-                                <p class="mb-0 text-black-50 small">Views</p>
-                            </div>
-                        </div> *@
-                        @* <div class="overflow-hidden border-top">
+                    </div>
+                    @*  <div class="d-flex">
+                    <div class="col-6 border-right p-3">
+                    <h6 class="font-weight-bold text-dark mb-1">358</h6>
+                    <p class="mb-0 text-black-50 small">Connections</p>
+                    </div>
+                    <div class="col-6 p-3">
+                    <h6 class="font-weight-bold text-dark mb-1">85</h6>
+                    <p class="mb-0 text-black-50 small">Views</p>
+                    </div>
+                    </div> *@
+                    @* <div class="overflow-hidden border-top">
                     <a class="font-weight-bold p-3 d-block" href="profile.html"> View my profile </a>
                     </div> *@
-                    </div>
+                </div>
 
 
-                
-               
+
+
             </aside>
 
 
 
 
 
-            
+
         </div>
     </div>
 </div>
 
-
-@section Scripts{ 
+@* 
+@section Scripts{
 
     <script src="~/js/user.js" asp-append-version="true"></script>
-   
+
 }
 
+ *@
