@@ -17,13 +17,22 @@
     </div>
 
     <div class="mb-3">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="showModal()">
+
+
+      @*  
+          Hiện modal lên để tạo
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" onclick="showModal()">
             <i class="align-middle" data-feather="plus"></i> Thêm mới
-        </button>
+        </button> *@
+
+
+        <a asp-action="Create" asp-controller="TblCategories" asp-area="Admin" class="btn btn-primary">
+            <i class="align-middle" data-feather="plus"></i> Thêm mới
+        </a>
     </div>
 
 
-  @*   tim kiem
+@*     tim kiem
     <div class="input-group w-auto">
         <span id="reload" class="btn" style="background-color: transparent;">
             <i class="fal fa-redo" style="color: #000000;"></i>
@@ -33,8 +42,7 @@
             <i class="fal fa-search" style="color: #ffffff;"></i>
         </button>
     </div>
- *@
-@* 
+ 
 
     Phân trang 
     <form asp-controller="TblCategories" asp-action="Index">
@@ -72,9 +80,20 @@
                                 <td id="display-order-@item.CategoryId">@item.Description</td>
 
                                 <td class="table-action">
-                                    <a href="#" onclick="populateModalWithIndustryDetails(@item.CategoryId)">
+
+                                @*     code client silde
+                                     <a href="#" onclick="populateModalWithIndustryDetails(@item.CategoryId)">
+                                        <i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i>
+                                    </a>  *@
+
+                                 @*    code server silde *@
+                                    <a href="/Admin/TblCategories/EditSV/@item.CategoryId" onclick="populateModalWithIndustryDetails(@item.CategoryId)">
                                         <i class="fal fa-pen" style="color: #000000; margin-right: 25px;"></i>
                                     </a>
+
+
+
+
                                     <a onclick="deleteIndustry(@item.CategoryId)">
                                         <i class="fal fa-trash" style="color: #000000;"></i>
                                     </a>
@@ -120,8 +139,8 @@
     </div>
 </div>
 
-@* 
-    Phân trang
+
+ @*    Phân trang
 <div class="row">
     <div class="col-12 col-xl-12 d-flex justify-content-end">
         <ul class="pagination justify-content-end">
@@ -232,8 +251,14 @@
 </div> *@
 
 @section Scripts{
+
+
     <script src="~/js/Category.js" asp-append-version="true"></script>
     <script>
+
+        // Khởi tạo CKEditor cho phần tử với ID "editor"
+       
+
         document.getElementById("CategoryName").addEventListener("keyup", function (event) {
             if (event.keyCode === 13) {
                 createIndustry();

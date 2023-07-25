@@ -15,6 +15,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using TechSocial.Models;
 using Microsoft.AspNetCore.Authorization;
 using TechSocial.Models.DTO;
+using Azure;
 
 namespace TechSocial.Areas.Admin.Controllers
 {
@@ -96,6 +97,122 @@ namespace TechSocial.Areas.Admin.Controllers
 
             return View();
         }
+
+
+
+
+        [HttpPost]
+        public IActionResult SaveSV(TblPost tblPost, IFormFile? file)
+        {
+
+
+            if (ModelState.IsValid)
+            {
+
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null && file.Length > 0)
+                {
+                    string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                    if (fileExtension != ".png" && fileExtension != ".jpg")
+                    {
+                        throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
+                    }
+
+                    string filename = Guid.NewGuid().ToString() + fileExtension;
+                    string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+                    string filePath = Path.Combine(postPath, filename);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    tblPost.ImgSrc = @"\image\Post\" + filename;
+                   
+                }
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                tblPost.AccountId = userId;
+                tblPost.CreatedAt = DateTime.Now;
+                _unitOfWork.Post.Update(tblPost);
+                _unitOfWork.Save();
+                TempData["success"] = "Cập nhật bài viết thành công";
+                return RedirectToAction(nameof(Index));
+
+
+
+            }
+
+            return View("Edit", tblPost);
+
+        }
+
+
+        [HttpPost]
+        public IActionResult CreateSV(TblPost tblPost, IFormFile? file)
+        {
+           
+
+            if (ModelState.IsValid)
+            {
+
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
+                    if (file != null && file.Length > 0)
+                    {
+                        string fileExtension = Path.GetExtension(file.FileName).ToLower();
+                        if (fileExtension != ".png" && fileExtension != ".jpg")
+                        {
+                            throw new Exception("Vui lòng chỉ chọn tập tin ảnh định dạng PNG hoặc JPG.");
+                        }
+
+                        string filename = Guid.NewGuid().ToString() + fileExtension;
+                        string postPath = Path.Combine(wwwRootPath, @"image\Post");
+
+                        string filePath = Path.Combine(postPath, filename);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(fileStream);
+                        }
+
+                        tblPost.ImgSrc = @"\image\Post\" + filename;
+                       
+                    }
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+                tblPost.AccountId = userId;
+                tblPost.CreatedAt = DateTime.Now;
+                _unitOfWork.Post.Add(tblPost);
+                    _unitOfWork.Save();
+                TempData["success"] = "Thêm bài viết thành công";
+                return RedirectToAction(nameof(Index));
+          
+
+              
+            }
+
+            return View("Create", tblPost);
+
+        }
+
+        public IActionResult EditSV(int? id)
+        {
+            var categories = _unitOfWork.Category.GetAll();
+            ViewData["CategoryId"] = new SelectList(categories, "CategoryId", "CategoryName");
+
+            var tblpost = _unitOfWork.Post.Get(u=>u.PostId == id); 
+
+
+
+            return View("Edit",tblpost);
+        }
+
+
+
+
+
+
 
 
         [HttpPost]

@@ -31,6 +31,57 @@ namespace TechSocial.Areas.Admin.Controllers
         //}
 
 
+        // thêm bằng server silde
+
+        [HttpPost]
+
+        public IActionResult CreateCategory( TblCategory tblCategory)
+        {
+            if (ModelState.IsValid)
+            {
+
+                    _unitOfWork.Category.Add(tblCategory);
+                    _unitOfWork.Save();
+                TempData["success"] = "Thêm sản phẩm thành công";
+                return RedirectToAction(nameof(Index));
+             
+
+            }
+            return View("Edit",tblCategory);
+        }
+
+		public IActionResult EditSV(int? id)
+		{
+
+
+			if (id == null)
+			{
+				return NotFound();
+			}
+			var tblCategory = _unitOfWork.Category.Get(u => u.CategoryId == id);
+			if (tblCategory == null)
+			{
+				return NotFound();
+			}
+			return View("Edit", tblCategory);
+		}
+
+        [HttpPost]
+        public IActionResult SaveSV(TblCategory tblCategory)
+            
+        {
+            if (ModelState.IsValid)
+            {
+                _unitOfWork.Category.Update(tblCategory);
+                _unitOfWork.Save();
+                TempData["success"] = "Cập nhật thành công";
+                return RedirectToAction(nameof(Index));
+
+            }
+            return View("Edit", tblCategory);
+        }
+
+
 
         public ActionResult Index(int page, int size)
         {

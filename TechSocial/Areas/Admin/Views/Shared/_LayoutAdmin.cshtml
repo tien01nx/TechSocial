@@ -52,11 +52,11 @@
 								<i class="far fa-list-alt"></i> <span class="align-middle">Quản lý Bài Viết</span>
 							</a>
 						</li>
-						<li class="sidebar-item">
+					@* 	<li class="sidebar-item">
 							<a class="sidebar-link" asp-area="Admin" asp-controller="Account" asp-action="Index">
 								<i class="fad fa-file-user"></i> <span class="align-middle">Quản lý Tài khoản</span>
 							</a>
-						</li>
+						</li> *@
 					}
 					else
 					{
@@ -91,7 +91,7 @@
 							</a>
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-								<img src="https://www.topcv.vn/images/avatar-default.jpg" onerror="this.src='https://www.topcv.vn/images/avatar-default.jpg'" alt="Avatar" class="avatar img-fluid rounded me-1" />
+								<img  alt="Avatar" class="avatar img-fluid rounded me-1" />
 								@* <span class="text-dark">@Account?.AccountName</span> *@
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
@@ -131,15 +131,15 @@
 			</footer>
 		</div>
 	</div>
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script> 
 	<script src="~/AdminAssets/js/js_new/app.js"></script>
-
+	<script src="~/js/_toastr.min.js"></script>
 	@* <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> *@
 	<script src="~/ckeditor/ckeditor.js" referrerpolicy="origin"></script>
 
 	@* <script src="https://cdn.tiny.cloud/1/go2gbbh0374j92i5q8hajkjsq1odkk8u6lvre7w2yoeislth/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> *@
 	<script src="~//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="~/js/sweetalert2@11.js"></script>
 	@* <script src="~/AdminAssets/js/js_new/datatables.js"></script> *@
 
 	@await RenderSectionAsync("Scripts", required: false)

@@ -8,7 +8,7 @@
 <div class="col-md-12">
     <div class="tile">
 
-        <form asp-action="Edit" enctype="multipart/form-data">
+        <form asp-action="SaveSV" enctype="multipart/form-data">
 
             <div class="tile-body">
                 <div class="row element-button">
@@ -44,9 +44,10 @@
                
                 <div class="form-group">
                     <label asp-for="Content" class="control-label"></label>
-                    <textarea asp-for="Content" class="form-control border-0 shadow ">
+                    <textarea id="editor" asp-for="Content"></textarea>
+                  @*   <textarea asp-for="Content" class="form-control border-0 shadow ">
                        
-                    </textarea>
+                    </textarea> *@
                 </div>
                 <div class="form-group">
                     <label asp-for="ImgSrc" class="control-label"></label>
@@ -77,10 +78,14 @@
 
 @section Scripts {
     <script>
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+
+        CKEDITOR.replace('editor', {
+            on: {
+                instanceReady: function (ev) {
+                    // Lưu trữ dữ liệu ban đầu khi CKEditor đã sẵn sàng
+                    initialData = ev.editor.getData();
+                }
+            }
         });
     </script>
 
